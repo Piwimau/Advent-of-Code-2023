@@ -169,10 +169,11 @@ times are the result of ten runs and represent the (real) wall time, including
 the time spent for parsing the input, as well as printing the puzzle results.
 CPU times were usually slightly lower, but quite similar in general.
 
-| Day               |      Min |      Max |     Mean |   Median | Standard Deviation |
-|-------------------|---------:|---------:|---------:|---------:|-------------------:|
-| Day 1 - Trebuchet | 0.671 ms | 0.923 ms | 0.795 ms | 0.798 ms |           0.068 ms |
-| Total             | 0.671 ms | 0.923 ms | 0.795 ms | 0.798 ms |           0.068 ms |
+| Day                    |      Min |      Max |     Mean |   Median | Standard Deviation |
+|------------------------|---------:|---------:|---------:|---------:|-------------------:|
+| Day 1 - Trebuchet      | 0.671 ms | 0.923 ms | 0.795 ms | 0.798 ms |           0.068 ms |
+| Day 2 - Cube Conundrum | 0.204 ms | 0.555 ms | 0.363 ms | 0.356 ms |           0.094 ms |
+| Total                  | 0.875 ms | 1.478 ms | 1.158 ms | 1.154 ms |           0.162 ms |
 
 ## License
 
