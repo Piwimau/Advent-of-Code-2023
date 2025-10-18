@@ -52,9 +52,9 @@ static const Digit DIGITS[] = {
  * @return `true` if the two calibration values were found, otherwise `false`.
  */
 static inline bool find_calibration_values(
-    const char* s,
-    int32_t* calibrationValue,
-    int32_t* alnumCalibrationValue
+    const char* restrict s,
+    int32_t* restrict calibrationValue,
+    int32_t* restrict alnumCalibrationValue
 ) {
     SCU_ASSERT(s != nullptr);
     SCU_ASSERT(calibrationValue != nullptr);
@@ -121,7 +121,6 @@ int main() {
             }
             scu_fprintf(
                 SCU_STDERR,
-                nullptr,
                 "The line '%s' does not contain both calibration values.\n",
                 line
             );
@@ -132,22 +131,20 @@ int main() {
         sumOfAlnumCalibrationValues += alnumCalibrationValue;
     }
     scu_free(line);
+    line = nullptr;
     if (error != SCU_ERROR_END_OF_FILE) {
         scu_fprintf(
             SCU_STDERR,
-            nullptr,
             "An error occurred while reading the input file (code %d).\n",
             error
         );
         return EXIT_FAILURE;
     }
     scu_printf(
-        nullptr,
         "The sum of the numeric calibration values is %" PRIi32 ".\n",
         sumOfCalibrationValues
     );
     scu_printf(
-        nullptr,
         "The sum of the alphanumeric calibration values is %" PRIi32 ".\n",
         sumOfAlnumCalibrationValues
     );
