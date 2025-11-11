@@ -143,21 +143,20 @@ If you want to try out one of my solutions, simply follow these steps below:
     make DAYNUM=01 CONFIG=release NATIVE=1
     ```
 
-  1. To run the solution for a specific day, use `make run`, which will build
-     the solution (if not done already) and execute it.
+5. To run the solution for a specific day, use `make run`, which will build the
+   solution (if not done already) and execute it.
 
-     ```shell
-     make run DAYNUM=01 CONFIG=release NATIVE=1
-     ```
+   ```shell
+   make run DAYNUM=01 CONFIG=release NATIVE=1
+   ```
 
-     Note that the solutions read the puzzle input from the standard input
-     stream. The `run` target expects a file called `input.txt` in the
-     `resources` directory of the selected day, which is used to redirect the
-     standard input stream. [As explained above](#about-this-project), my input
-     files are not included in the repository, so you'll have to create them
-     yourself and paste your puzzle input into them. You can find your input for
-     each day [here](https://adventofcode.com/2023) if you haven't downloaded it
-     already.
+   Note that the solutions read the puzzle input from the standard input stream.
+   The `run` target expects a file called `input.txt` in the `resources`
+   directory of the selected day, which is used to redirect the standard input
+   stream. [As explained above](#about-this-project), my input files are not
+   included in the repository, so you'll have to create them yourself and paste
+   your puzzle input into them. You can find your input for each day
+   [here](https://adventofcode.com/2023) if you haven't downloaded it already.
 
 ## Timings
 
