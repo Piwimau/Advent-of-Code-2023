@@ -115,7 +115,7 @@ int main() {
         );
         if (!foundCalibrationValues) {
             // Replace the newline (if present) to avoid an ugly line break.
-            int64_t newlineIndex = scu_str_first(line, '\n');
+            int64_t newlineIndex = scu_str_index_of(line, '\n');
             if (newlineIndex != -1) {
                 line[newlineIndex] = '\0';
             }

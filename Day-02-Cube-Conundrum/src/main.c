@@ -156,7 +156,7 @@ int main() {
     while ((error = scu_readln(&line, &size)) == SCU_ERROR_NONE) {
         // Replace the newline (if present) to simplify parsing and avoid an
         // ugly line break if an error occurs.
-        int64_t newlineIndex = scu_str_first(line, '\n');
+        int64_t newlineIndex = scu_str_index_of(line, '\n');
         if (newlineIndex != -1) {
             line[newlineIndex] = '\0';
         }
