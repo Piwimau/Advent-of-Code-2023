@@ -14,16 +14,16 @@ typedef enum Color {
     COLOR_BLUE
 } Color;
 
-/** @brief Represents a token for a color used to parse the input. */
-typedef struct ColorToken {
+/** @brief Represents a token used to parse the input. */
+typedef struct Token {
 
     /** @brief The value of the token, e.g., "red". */
     const char* value;
 
-    /** @brief The length of the token, e.g., 3 for "red". */
+    /** @brief The length of the token, e.g., three for "red". */
     int64_t length;
 
-} ColorToken;
+} Token;
 
 /** @brief Represents a game. */
 typedef struct Game {
@@ -43,11 +43,18 @@ static constexpr int32_t MAX_CUBES[COLOR_BLUE + 1] = {
     [COLOR_BLUE] = 14
 };
 
+/** @brief An array of all possible colors. */
+static constexpr Color COLORS[COLOR_BLUE + 1] = {
+    COLOR_RED,
+    COLOR_GREEN,
+    COLOR_BLUE
+};
+
 /** @brief The tokens used to parse the colors of cubes in the input. */
-static const ColorToken COLOR_TOKENS[COLOR_BLUE + 1] = {
-    [COLOR_RED] = { .value = "red", .length = 3 },
-    [COLOR_GREEN] = { .value = "green", .length = 5 },
-    [COLOR_BLUE] = { .value = "blue", .length = 4 }
+static const Token TOKENS[COLOR_BLUE + 1] = {
+    [COLOR_RED] = { .value = "red", .length = SCU_SIZEOF("red") - 1 },
+    [COLOR_GREEN] = { .value = "green", .length = SCU_SIZEOF("green") - 1 },
+    [COLOR_BLUE] = { .value = "blue", .length = SCU_SIZEOF("blue") - 1 }
 };
 
 /**
@@ -79,7 +86,7 @@ static inline bool game_parse(const char* restrict line, Game* restrict game) {
     SCU_ASSERT(game != nullptr);
     *game = (Game) { .id = -1, .minCubes = { 0, 0, 0 } };
     int64_t read = 0;
-    if (scu_sscanf(line, "Game %" SCNi32 ": %n", &game->id, &read) != 1) {
+    if (scu_sscanf(line, "Game %" SCNd32 ": %n", &game->id, &read) != 1) {
         return false;
     }
     for (int64_t i = read; line[i] != '\0'; i++) {
@@ -90,7 +97,7 @@ static inline bool game_parse(const char* restrict line, Game* restrict game) {
             return false;
         }
         int32_t cubes = 0;
-        if ((scu_sscanf(line + i, "%" SCNi32 "%n", &cubes, &read) != 1)
+        if ((scu_sscanf(line + i, "%" SCNd32 "%n", &cubes, &read) != 1)
                 || (cubes < 0)) {
             return false;
         }
@@ -101,14 +108,15 @@ static inline bool game_parse(const char* restrict line, Game* restrict game) {
         }
         i++;
         bool matchedColor = false;
-        for (Color color = COLOR_RED; color < (COLOR_BLUE + 1); color++) {
-            if (scu_str_starts_with(line + i, COLOR_TOKENS[color].value)) {
+        SCU_FOREACH(color, COLORS) {
+            const Token* token = &TOKENS[*color];
+            if (scu_strncmp(line + i, token->value, token->length) == 0) {
                 matchedColor = true;
-                game->minCubes[color] = SCU_MAX(game->minCubes[color], cubes);
+                game->minCubes[*color] = SCU_MAX(game->minCubes[*color], cubes);
                 // Advance the index to the end of the matched color token, but
                 // one less than the actual length, as it will be incremented by
                 // the main loop as well.
-                i += COLOR_TOKENS[color].length - 1;
+                i += token->length - 1;
                 break;
             }
         }

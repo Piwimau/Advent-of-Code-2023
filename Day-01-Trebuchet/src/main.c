@@ -10,25 +10,28 @@
 /** @brief Represents a digit. */
 typedef struct Digit {
 
-    /** @brief The string representation of the digit, e.g., "one" for 1. */
-    const char* value;
+    /** @brief The token of the digit, e.g., "one" for the digit one. */
+    const char* token;
 
-    /** @brief The length of the string representation, e.g., 3 for "one". */
-    int32_t length;
+    /** @brief The length of the token, e.g., 3 for the digit one. */
+    int64_t length;
+
+    /** @brief The value of the digit, e.g., 1 for the digit one. */
+    int32_t value;
 
 } Digit;
 
 /** @brief The digits to find in the second part of the puzzle. */
 static const Digit DIGITS[] = {
-    { .value = "one", .length = 3 },
-    { .value = "two", .length = 3 },
-    { .value = "three", .length = 5 },
-    { .value = "four", .length = 4 },
-    { .value = "five", .length = 4 },
-    { .value = "six", .length = 3 },
-    { .value = "seven", .length = 5 },
-    { .value = "eight", .length = 5 },
-    { .value = "nine", .length = 4 }
+    { .token = "one", .length = SCU_SIZEOF("one") - 1, .value = 1 },
+    { .token = "two", .length = SCU_SIZEOF("two") - 1, .value = 2 },
+    { .token = "three", .length = SCU_SIZEOF("three") - 1, .value = 3 },
+    { .token = "four", .length = SCU_SIZEOF("four") - 1, .value = 4 },
+    { .token = "five", .length = SCU_SIZEOF("five") - 1, .value = 5 },
+    { .token = "six", .length = SCU_SIZEOF("six") - 1, .value = 6 },
+    { .token = "seven", .length = SCU_SIZEOF("seven") - 1, .value = 7 },
+    { .token = "eight", .length = SCU_SIZEOF("eight") - 1, .value = 8 },
+    { .token = "nine", .length = SCU_SIZEOF("nine") - 1, .value = 9 }
 };
 
 /**
@@ -76,14 +79,12 @@ static inline bool find_calibration_values(
             lastAlnumDigit = digit;
         }
         else {
-            for (int32_t j = 0; j < SCU_COUNTOF(DIGITS); j++) {
-                const char* value = DIGITS[j].value;
-                int32_t length = DIGITS[j].length;
-                if (scu_strncmp(s + i, value, length) == 0) {
+            SCU_FOREACH(digit, DIGITS) {
+                if (scu_strncmp(s + i, digit->token, digit->length) == 0) {
                     if (firstAlnumDigit == -1) {
-                        firstAlnumDigit = j + 1;
+                        firstAlnumDigit = digit->value;
                     }
-                    lastAlnumDigit = j + 1;
+                    lastAlnumDigit = digit->value;
                     break;
                 }
             }
