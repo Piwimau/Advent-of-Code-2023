@@ -109,43 +109,41 @@ If you want to try out one of my solutions, simply follow these steps below:
 
    ```plaintext
    Usage: make [TARGET]... [VARIABLE]...
-   
+
    Targets:
      all    Build the selected day (default).
      run    Build and run the selected day.
      clean  Remove all build artifacts of the selected day.
      help   Display this help and exit.
-   
+
    Variables:
      CONFIG={debug|release}  Set the build configuration (default: debug).
-     DAYDIR=PATH             Select the day by its directory PATH (overrides DAYNUM).
-     DAYNUM=N                Select the day by its two-digit number N (default: first day found).
+     DAY=N                   Select the day by its two-digit number N (default: first day found).
      NATIVE                  Enable machine-specific optimizations.
      V                       Enable verbose build output.
    ```
 
    To build the solution for a specific day, run `make all` (or simply `make`)
-   and specify the day either by its directory or its two-digit number.
+   and specify the day by its two-digit number.
 
     ```shell
-    make DAYDIR=./Day-01-Trebuchet
-    make DAYNUM=01
+    make DAY=01
     ```
 
-    If you don't specify a day manually, the first day found in the repository
-    will be selected. Note that an unoptimized debug build is created by
-    default. Optionally specify `CONFIG=release` and `NATIVE=1` to enable
-    (machine-specific) optimizations.
+    If you don't specify a day, the directory of the first day in the repository
+    will be selected by default. Note that `make all` produces an unoptimized
+    debug build by default. Optionally specify `CONFIG=release` and `NATIVE=1`
+    to enable (machine-specific) optimizations.
 
     ```shell
-    make DAYNUM=01 CONFIG=release NATIVE=1
+    make DAY=01 CONFIG=release NATIVE=1
     ```
 
 5. To run the solution for a specific day, use `make run`, which will build the
    solution (if not done already) and execute it.
 
    ```shell
-   make run DAYNUM=01 CONFIG=release NATIVE=1
+   make run DAY=01 CONFIG=release NATIVE=1
    ```
 
    Note that the solutions read the puzzle input from the standard input stream.

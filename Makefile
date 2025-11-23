@@ -18,8 +18,8 @@ else ifeq (${CONFIG}, release)
 	LIB_SUFFIX =
 endif
 
-ifdef DAYNUM
-	DAYDIR ?= ${firstword ${wildcard Day-${DAYNUM}-*}}
+ifdef DAY
+	DAYDIR ?= ${firstword ${wildcard Day-${DAY}-*}}
 else
 	DAYDIR ?= ${firstword ${wildcard Day-*}}
 endif
@@ -37,7 +37,7 @@ endif
 SRC = ${DAYDIR}/src
 BUILD = ${DAYDIR}/build
 
-INCS = -Iinclude -I${DAYDIR}/include
+INCS = -Iinclude $(if $(wildcard ${DAYDIR}/include), -I${DAYDIR}/include)
 SRCS = ${shell find ${SRC} -type f -name '*.c'}
 OBJS = ${patsubst ${SRC}/%.c, ${BUILD}/${CONFIG}/%.o, ${SRCS}}
 DEPS = ${patsubst ${SRC}/%.c, ${BUILD}/${CONFIG}/%.d, ${SRCS}}
@@ -73,8 +73,7 @@ help:
 	@echo ""
 	@echo "Variables:"
 	@echo "  CONFIG={debug|release}  Set the build configuration (default: debug)."
-	@echo "  DAYDIR=PATH             Select the day by its directory PATH (overrides DAYNUM)."
-	@echo "  DAYNUM=N                Select the day by its two-digit number N (default: first day found)."
+	@echo "  DAY=N                   Select the day by its two-digit number N (default: first day found)."
 	@echo "  NATIVE                  Enable machine-specific optimizations."
 	@echo "  V                       Enable verbose build output."
 
