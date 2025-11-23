@@ -142,11 +142,11 @@ int main() {
         return EXIT_FAILURE;
     }
     scu_printf(
-        "The sum of the numeric calibration values is %" PRIi32 ".\n",
+        "The sum of the numeric calibration values is %" PRId32 ".\n",
         sumOfCalibrationValues
     );
     scu_printf(
-        "The sum of the alphanumeric calibration values is %" PRIi32 ".\n",
+        "The sum of the alphanumeric calibration values is %" PRId32 ".\n",
         sumOfAlnumCalibrationValues
     );
     return EXIT_SUCCESS;

@@ -194,11 +194,11 @@ int main() {
         return EXIT_FAILURE;
     }
     scu_printf(
-        "The sum of the IDs of the possible games is %" PRIi32 ".\n",
+        "The sum of the IDs of the possible games is %" PRId32 ".\n",
         sumOfIds
     );
     scu_printf(
-        "The sum of the powers of all games is %" PRIi32 ".\n",
+        "The sum of the powers of all games is %" PRId32 ".\n",
         sumOfPowers
     );
     return EXIT_SUCCESS;
