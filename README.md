@@ -168,7 +168,8 @@ CPU times were usually slightly lower, but quite similar in general.
 |------------------------|---------:|---------:|---------:|---------:|-------------------:|
 | Day 1 - Trebuchet      | 0.671 ms | 0.923 ms | 0.795 ms | 0.798 ms |           0.068 ms |
 | Day 2 - Cube Conundrum | 0.204 ms | 0.555 ms | 0.363 ms | 0.356 ms |           0.094 ms |
-| Total                  | 0.875 ms | 1.478 ms | 1.158 ms | 1.154 ms |           0.162 ms |
+| Day 3 - Gear Ratios    | 0.577 ms | 0.698 ms | 0.629 ms | 0.611 ms |           0.047 ms |
+| Total                  | 1.452 ms | 2.176 ms | 1.787 ms | 1.765 ms |           0.209 ms |
 
 ## License
 
