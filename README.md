@@ -168,7 +168,8 @@ usually slightly lower, but quite similar in general.
 | Day 1 - Trebuchet      | 0.671 ms | 0.923 ms | 0.795 ms | 0.798 ms |           0.068 ms |
 | Day 2 - Cube Conundrum | 0.204 ms | 0.555 ms | 0.363 ms | 0.356 ms |           0.094 ms |
 | Day 3 - Gear Ratios    | 0.577 ms | 0.698 ms | 0.629 ms | 0.611 ms |           0.047 ms |
-| Total                  | 1.452 ms | 2.176 ms | 1.787 ms | 1.765 ms |           0.209 ms |
+| Day 4 - Scratchcards   | 0.835 ms | 1.248 ms | 0.950 ms | 0.888 ms |           0.130 ms |
+| Total                  | 2.287 ms | 3.424 ms | 2.737 ms | 2.653 ms |           0.339 ms |
 
 ## License
 
