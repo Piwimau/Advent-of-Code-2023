@@ -79,6 +79,7 @@ static inline bool find_calibration_values(
             lastAlnumDigit = digit;
         }
         else {
+            const Digit* digit;
             SCU_FOREACH(digit, DIGITS) {
                 if (scu_strncmp(s + i, digit->token, digit->length) == 0) {
                     if (firstAlnumDigit == -1) {
@@ -132,7 +133,6 @@ int main() {
         sumOfAlnumCalibrationValues += alnumCalibrationValue;
     }
     scu_free(line);
-    line = nullptr;
     if (error != SCU_ERROR_END_OF_FILE) {
         scu_fprintf(
             SCU_STDERR,

@@ -108,6 +108,7 @@ static inline bool game_parse(const char* restrict line, Game* restrict game) {
         }
         i++;
         bool matchedColor = false;
+        const Color* color;
         SCU_FOREACH(color, COLORS) {
             const Token* token = &TOKENS[*color];
             if (scu_strncmp(line + i, token->value, token->length) == 0) {
@@ -184,7 +185,6 @@ int main() {
         sumOfPowers += game_power(&game);
     }
     scu_free(line);
-    line = nullptr;
     if (error != SCU_ERROR_END_OF_FILE) {
         scu_fprintf(
             SCU_STDERR,
