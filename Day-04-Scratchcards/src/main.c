@@ -28,7 +28,7 @@ typedef struct Card {
  * each number is surrounded by one or more spaces.
  *
  * An example for a valid line of text might be "Card 1: 41 48 83 86 17 | 83 86
- * 6 31 17  9 48 53".
+ * 6 31 17 9 48 53".
  *
  * @warning The behavior is undefined if `line` is not a pointer to a
  * null-terminated byte string.
@@ -37,7 +37,7 @@ typedef struct Card {
  * @param[out] card The parsed card.
  * @return `true` if a card was successfully parsed, otherwise `false`.
  */
-static bool card_parse(const char* line, Card* card) {
+static bool card_parse(const char* restrict line, Card* restrict card) {
     SCU_ASSERT(line != nullptr);
     SCU_ASSERT(card != nullptr);
     int32_t number;
