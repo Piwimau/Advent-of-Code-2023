@@ -9,13 +9,15 @@
 #include <stdlib.h>
 #include <tgmath.h>
 
-/** @brief Represents a scratchcard. */
-typedef struct Card {
+struct Card {
 
     /** @brief The number of winning numbers on the card. */
     int32_t winningNumbers;
 
-} Card;
+};
+
+/** @brief Represents a scratchcard. */
+typedef struct Card Card;
 
 /**
  * @brief Parses a card from a line of text.

@@ -7,8 +7,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-/** @brief Represents a digit. */
-typedef struct Digit {
+struct Digit {
 
     /** @brief The token of the digit, e.g., "one" for the digit one. */
     const char* token;
@@ -19,7 +18,10 @@ typedef struct Digit {
     /** @brief The value of the digit, e.g., 1 for the digit one. */
     int32_t value;
 
-} Digit;
+};
+
+/** @brief Represents a digit. */
+typedef struct Digit Digit;
 
 /** @brief The digits to find in the second part of the puzzle. */
 static const Digit DIGITS[] = {
