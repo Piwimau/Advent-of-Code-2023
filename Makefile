@@ -45,7 +45,7 @@ BIN = ${BUILD}/${CONFIG}/main.exe
 all: ${BIN}
 
 run: all
-	${Q}./${BIN} < ${DAYDIR}/resources/input.txt
+	${Q}${BIN} < ${DAYDIR}/resources/input.txt
 
 ${BIN}: ${OBJS}
 	${Q}mkdir -p ${dir $@}

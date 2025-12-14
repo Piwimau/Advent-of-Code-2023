@@ -163,13 +163,14 @@ result of ten runs and represent the (real) wall time, including the time spent
 for parsing the input, as well as printing the puzzle results. CPU times were
 usually slightly lower, but quite similar in general.
 
-| Day                    |      Min |      Max |     Mean |   Median | Standard Deviation |
-|------------------------|---------:|---------:|---------:|---------:|-------------------:|
-| Day 1 - Trebuchet      | 0.671 ms | 0.923 ms | 0.795 ms | 0.798 ms |           0.068 ms |
-| Day 2 - Cube Conundrum | 0.204 ms | 0.555 ms | 0.363 ms | 0.356 ms |           0.094 ms |
-| Day 3 - Gear Ratios    | 0.577 ms | 0.698 ms | 0.629 ms | 0.611 ms |           0.047 ms |
-| Day 4 - Scratchcards   | 0.835 ms | 1.248 ms | 0.950 ms | 0.888 ms |           0.130 ms |
-| Total                  | 2.287 ms | 3.424 ms | 2.737 ms | 2.653 ms |           0.339 ms |
+| Day                                     |      Min |      Max |     Mean |   Median | Standard Deviation |
+|-----------------------------------------|---------:|---------:|---------:|---------:|-------------------:|
+| Day 1 - Trebuchet                       | 0.671 ms | 0.923 ms | 0.795 ms | 0.798 ms |           0.068 ms |
+| Day 2 - Cube Conundrum                  | 0.204 ms | 0.555 ms | 0.363 ms | 0.356 ms |           0.094 ms |
+| Day 3 - Gear Ratios                     | 0.577 ms | 0.698 ms | 0.629 ms | 0.611 ms |           0.047 ms |
+| Day 4 - Scratchcards                    | 0.835 ms | 1.248 ms | 0.950 ms | 0.888 ms |           0.130 ms |
+| Day 5 - If You Give A Seed A Fertilizer | 0.168 ms | 0.527 ms | 0.290 ms | 0.271 ms |           0.109 ms |
+| Total                                   | 2.455 ms | 3.951 ms | 3.027 ms | 2.924 ms |           0.448 ms |
 
 ## License
 
