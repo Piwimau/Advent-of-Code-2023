@@ -221,7 +221,7 @@ static inline bool schematic_is_start_of_part_number(
         Vector neighbor = { .x = position.x - 1, .y = position.y };
         if (!schematic_is_digit(schematic, neighbor)) {
             const Vector* offset;
-            SCU_FOREACH(offset, LEFT_OFFSETS) {
+            SCU_ARRAY_FOREACH(offset, LEFT_OFFSETS) {
                 neighbor = (Vector) {
                     .x = position.x + offset->x,
                     .y = position.y + offset->y
@@ -232,7 +232,7 @@ static inline bool schematic_is_start_of_part_number(
             }
         }
         const Vector* offset;
-        SCU_FOREACH(offset, MIDDLE_OFFSETS) {
+        SCU_ARRAY_FOREACH(offset, MIDDLE_OFFSETS) {
             neighbor = (Vector) {
                 .x = position.x + offset->x,
                 .y = position.y + offset->y
@@ -243,7 +243,7 @@ static inline bool schematic_is_start_of_part_number(
         }
         neighbor = (Vector) { .x = position.x + 1, .y = position.y };
         if (!schematic_is_digit(schematic, neighbor)) {
-            SCU_FOREACH(offset, RIGHT_OFFSETS) {
+            SCU_ARRAY_FOREACH(offset, RIGHT_OFFSETS) {
                 neighbor = (Vector) {
                     .x = position.x + offset->x,
                     .y = position.y + offset->y
@@ -358,7 +358,7 @@ static int32_t schematic_sum_of_gear_ratios(const Schematic* schematic) {
                 Vector starts[NUMBERS_PER_GEAR] = { };
                 int32_t numbers = 0;
                 const Vector* offset;
-                SCU_FOREACH(offset, OFFSETS) {
+                SCU_ARRAY_FOREACH(offset, OFFSETS) {
                     Vector neighbor = (Vector) {
                         .x = position.x + offset->x,
                         .y = position.y + offset->y
@@ -392,7 +392,7 @@ static int32_t schematic_sum_of_gear_ratios(const Schematic* schematic) {
                 if (numbers == NUMBERS_PER_GEAR) {
                     int32_t gearRatio = 1;
                     const Vector* start;
-                    SCU_FOREACH(start, starts) {
+                    SCU_ARRAY_FOREACH(start, starts) {
                         int32_t number = 0;
                         scu_sscanf(
                             schematic_char_at(schematic, *start),

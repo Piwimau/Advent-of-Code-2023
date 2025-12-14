@@ -82,7 +82,7 @@ static inline bool find_calibration_values(
         }
         else {
             const Digit* digit;
-            SCU_FOREACH(digit, DIGITS) {
+            SCU_ARRAY_FOREACH(digit, DIGITS) {
                 if (scu_strncmp(s + i, digit->token, digit->length) == 0) {
                     if (firstAlnumDigit == -1) {
                         firstAlnumDigit = digit->value;

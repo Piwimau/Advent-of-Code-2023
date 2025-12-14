@@ -1,6 +1,7 @@
 #include <inttypes.h>
 #include <scu/alloc.h>
 #include <scu/assert.h>
+#include <scu/common.h>
 #include <scu/io.h>
 #include <scu/list.h>
 #include <scu/math.h>
@@ -95,7 +96,7 @@ static void almanac_free(Almanac* almanac) {
         scu_list_free(almanac->seeds);
         almanac->seeds = nullptr;
         Map* map;
-        SCU_FOREACH(map, almanac->maps) {
+        SCU_ARRAY_FOREACH(map, almanac->maps) {
             scu_list_free(map->mappings);
             map->mappings = nullptr;
         }
@@ -239,7 +240,7 @@ fail:
         }
         else {
             const Map* map;
-            SCU_FOREACH(map, almanac->maps) {
+            SCU_ARRAY_FOREACH(map, almanac->maps) {
                 if (map->mappings == nullptr) {
                     error = SCU_ERROR_INVALID_FORMAT;
                     break;
@@ -271,7 +272,7 @@ static int64_t almanac_lowest_location_single(const Almanac* almanac) {
     SCU_LIST_FOREACH(seed, almanac->seeds) {
         int64_t dest = *seed;
         const Map* map;
-        SCU_FOREACH(map, almanac->maps) {
+        SCU_ARRAY_FOREACH(map, almanac->maps) {
             const Mapping* mapping;
             SCU_LIST_FOREACH(mapping, map->mappings) {
                 if ((dest >= mapping->src)
@@ -311,7 +312,7 @@ static int64_t almanac_lowest_location_ranges(const Almanac* almanac) {
         };
         scu_stack_push(oldRanges, oldRange);
         const Map* map;
-        SCU_FOREACH(map, almanac->maps) {
+        SCU_ARRAY_FOREACH(map, almanac->maps) {
             scu_stack_clear(newRanges);
             while (scu_stack_try_pop(oldRanges, oldRange)) {
                 int64_t oldStart = oldRange.src;

@@ -1,9 +1,9 @@
 #include <inttypes.h>
 #include <scu/alloc.h>
 #include <scu/assert.h>
+#include <scu/hash-set.h>
 #include <scu/io.h>
 #include <scu/list.h>
-#include <scu/set.h>
 #include <scu/string.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -48,28 +48,28 @@ static bool card_parse(const char* restrict line, Card* restrict card) {
         return false;
     }
     line += read;
-    SCUSet* winningNumbers = scu_set_new(
+    SCUHashSet* winningNumbers = scu_hash_set_new(
         SCU_SIZEOF(int32_t),
         scu_hash_int32,
         scu_equal_int32
     );
     while (scu_sscanf(line, "%" SCNd32 "%lln", &number, &read) == 1) {
-        scu_set_add(winningNumbers, number);
+        scu_hash_set_add(winningNumbers, number);
         line += read;
     }
     if (scu_sscanf(line, " | %lln", &read) != 0) {
-        scu_set_free(winningNumbers);
+        scu_hash_set_free(winningNumbers);
         return false;
     }
     line += read;
     card->winningNumbers = 0;
     while (scu_sscanf(line, "%" SCNd32 "%lln", &number, &read) == 1) {
-        if (scu_set_contains(winningNumbers, number)) {
+        if (scu_hash_set_contains(winningNumbers, number)) {
             card->winningNumbers++;
         }
         line += read;
     }
-    scu_set_free(winningNumbers);
+    scu_hash_set_free(winningNumbers);
     return true;
 }
 

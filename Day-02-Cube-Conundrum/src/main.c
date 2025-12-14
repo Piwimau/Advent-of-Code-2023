@@ -115,7 +115,7 @@ static inline bool game_parse(const char* restrict line, Game* restrict game) {
         i++;
         bool matchedColor = false;
         const Color* color;
-        SCU_FOREACH(color, COLORS) {
+        SCU_ARRAY_FOREACH(color, COLORS) {
             const Token* token = &TOKENS[*color];
             if (scu_strncmp(line + i, token->value, token->length) == 0) {
                 matchedColor = true;
