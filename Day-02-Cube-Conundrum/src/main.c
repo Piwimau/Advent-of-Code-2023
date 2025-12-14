@@ -92,7 +92,7 @@ static inline bool game_parse(const char* restrict line, Game* restrict game) {
     SCU_ASSERT(game != nullptr);
     *game = (Game) { .id = -1, .minCubes = { 0, 0, 0 } };
     int64_t read = 0;
-    if (scu_sscanf(line, "Game %" SCNd32 ": %n", &game->id, &read) != 1) {
+    if (scu_sscanf(line, "Game %" SCNd32 ": %lln", &game->id, &read) != 1) {
         return false;
     }
     for (int64_t i = read; line[i] != '\0'; i++) {
@@ -103,7 +103,7 @@ static inline bool game_parse(const char* restrict line, Game* restrict game) {
             return false;
         }
         int32_t cubes = 0;
-        if ((scu_sscanf(line + i, "%" SCNd32 "%n", &cubes, &read) != 1)
+        if ((scu_sscanf(line + i, "%" SCNd32 "%lln", &cubes, &read) != 1)
                 || (cubes < 0)) {
             return false;
         }

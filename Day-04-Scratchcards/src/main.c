@@ -43,8 +43,8 @@ static bool card_parse(const char* restrict line, Card* restrict card) {
     SCU_ASSERT(line != nullptr);
     SCU_ASSERT(card != nullptr);
     int32_t number;
-    int32_t read;
-    if (scu_sscanf(line, "Card %" SCNd32 ": %n", &number, &read) != 1) {
+    int64_t read;
+    if (scu_sscanf(line, "Card %" SCNd32 ": %lln", &number, &read) != 1) {
         return false;
     }
     line += read;
@@ -53,17 +53,17 @@ static bool card_parse(const char* restrict line, Card* restrict card) {
         scu_hash_int32,
         scu_equal_int32
     );
-    while (scu_sscanf(line, "%" SCNd32 "%n", &number, &read) == 1) {
+    while (scu_sscanf(line, "%" SCNd32 "%lln", &number, &read) == 1) {
         scu_set_add(winningNumbers, number);
         line += read;
     }
-    if (scu_sscanf(line, " | %n", &read) != 0) {
+    if (scu_sscanf(line, " | %lln", &read) != 0) {
         scu_set_free(winningNumbers);
         return false;
     }
     line += read;
     card->winningNumbers = 0;
-    while (scu_sscanf(line, "%" SCNd32 "%n", &number, &read) == 1) {
+    while (scu_sscanf(line, "%" SCNd32 "%lln", &number, &read) == 1) {
         if (scu_set_contains(winningNumbers, number)) {
             card->winningNumbers++;
         }
