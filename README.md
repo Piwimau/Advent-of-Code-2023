@@ -119,6 +119,7 @@ If you want to try out one of my solutions, simply follow these steps below:
    Variables:
      CONFIG={debug|release}  Set the build configuration (default: debug).
      DAY=N                   Select the day by its two-digit number N (default: first day found).
+     NATIVE=1                Enable machine-specific optimizations.
      V                       Enable verbose build output.
    ```
 
@@ -131,18 +132,18 @@ If you want to try out one of my solutions, simply follow these steps below:
 
     If you don't specify a day, the directory of the first day in the repository
     will be selected by default. Note that `make all` produces an unoptimized
-    debug build by default. Optionally specify `CONFIG=release` to enable
-    optimizations.
+    debug build by default. Optionally specify `CONFIG=release` and `NATIVE=1`
+    to enable (machine-specific) optimizations.
 
     ```shell
-    make DAY=01 CONFIG=release
+    make DAY=01 CONFIG=release NATIVE=1
     ```
 
 5. To run the solution for a specific day, use `make run`, which will build the
    solution (if not done already) and execute it.
 
    ```shell
-   make run DAY=01 CONFIG=release
+   make run DAY=01 CONFIG=release NATIVE=1
    ```
 
    Note that the solutions read the puzzle input from the standard input stream.
@@ -158,10 +159,11 @@ If you want to try out one of my solutions, simply follow these steps below:
 Finally, here are some simple (non-scientific) timings I created using
 [`SCU`](https://github.com/Piwimau/SCU) and my main machine (Intel Core
 i9-13900HX, 32GB DDR5-5600 RAM) running Windows 11 25H2. All used
-`CONFIG=release` to take advantage of optimizations. The reported times are the
-result of ten runs and represent the (real) wall time, including the time spent
-for parsing the input, as well as printing the puzzle results. CPU times were
-usually slightly lower, but quite similar in general.
+`CONFIG=release` and `NATIVE=1` to take advantage of (machine-specific)
+optimizations. The reported times are the result of ten runs and represent the
+(real) wall time, including the time spent for parsing the input, as well as
+printing the puzzle results. CPU times were usually slightly lower, but quite
+similar in general.
 
 | Day                                     |      Min |      Max |     Mean |   Median | Standard Deviation |
 |-----------------------------------------|---------:|---------:|---------:|---------:|-------------------:|
@@ -172,6 +174,12 @@ usually slightly lower, but quite similar in general.
 | Day 5 - If You Give A Seed A Fertilizer | 0.168 ms | 0.527 ms | 0.290 ms | 0.271 ms |           0.109 ms |
 | Day 6 - Wait For It                     | 0.090 ms | 0.237 ms | 0.182 ms | 0.190 ms |           0.051 ms |
 | Total                                   | 2.545 ms | 4.188 ms | 3.209 ms | 3.114 ms |           0.499 ms |
+
+> [!NOTE]
+> The timings shown above represent actual computation times, not total process
+> lifetimes. Startup and shutdown of processes usually introduces an overhead of
+> a few milliseconds, but since this is not relevant for the performance of the
+> solutions themselves, I decided to ignore it here.
 
 ## License
 

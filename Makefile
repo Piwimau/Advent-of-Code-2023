@@ -19,9 +19,13 @@ else ifeq (${CONFIG}, release)
 endif
 
 ifdef DAY
-	DAYDIR ?= ${firstword ${wildcard Day-${DAY}-*}}
+	DAYDIR = ${firstword ${wildcard Day-${DAY}-*}}
 else
-	DAYDIR ?= ${firstword ${wildcard Day-*}}
+	DAYDIR = ${firstword ${wildcard Day-*}}
+endif
+
+ifdef NATIVE
+	CFLAGS += -march=native -mtune=native
 endif
 
 ifdef V
@@ -70,6 +74,7 @@ help:
 	@echo "Variables:"
 	@echo "  CONFIG={debug|release}  Set the build configuration (default: debug)."
 	@echo "  DAY=N                   Select the day by its two-digit number N (default: first day found)."
+	@echo "  NATIVE=1                Enable machine-specific optimizations."
 	@echo "  V                       Enable verbose build output."
 
 -include ${DEPS}
