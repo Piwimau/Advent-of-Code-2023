@@ -1,7 +1,7 @@
 #include <inttypes.h>
 #include <scu/alloc.h>
+#include <scu/array.h>
 #include <scu/assert.h>
-#include <scu/common.h>
 #include <scu/io.h>
 #include <scu/string.h>
 #include <stdint.h>
