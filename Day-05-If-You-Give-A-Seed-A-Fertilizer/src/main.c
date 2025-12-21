@@ -10,7 +10,11 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-struct Mapping {
+/**
+ * @brief Represents a mapping that translates a range of source values to a
+ * range of destination values.
+ */
+typedef struct Mapping {
 
     /** @brief The first value of the destination range. */
     int64_t dest;
@@ -21,26 +25,18 @@ struct Mapping {
     /** @brief The length of the range. */
     int64_t length;
 
-};
-
-/**
- * @brief Represents a mapping that translates a range of source values to a
- * range of destination values.
- */
-typedef struct Mapping Mapping;
-
-struct Map {
-
-    /** @brief The list of mappings in the map. */
-    Mapping* mappings;
-
-};
+} Mapping;
 
 /**
  * @brief Represents a map containing zero or more mappings to translate ranges
  * of source values to ranges of destination values.
  */
-typedef struct Map Map;
+typedef struct Map {
+
+    /** @brief The list of mappings in the map. */
+    Mapping* mappings;
+
+} Map;
 
 /** @brief Headers used to identify different maps while parsing the input. */
 static const char* const MAP_HEADERS[] = {
@@ -53,7 +49,11 @@ static const char* const MAP_HEADERS[] = {
     "humidity-to-location map:\n"
 };
 
-struct Almanac {
+/**
+ * @brief Represents an almanac containing seeds (or ranges of seeds) and maps
+ * to translate those seeds to their corresponding locations.
+ */
+typedef struct Almanac {
 
     /** @brief The list of seeds. */
     int64_t* seeds;
@@ -61,15 +61,10 @@ struct Almanac {
     /** @brief The maps in the almanac. */
     Map maps[SCU_COUNTOF(MAP_HEADERS)];
 
-};
+} Almanac;
 
-/**
- * @brief Represents an almanac containing seeds (or ranges of seeds) and maps
- * to translate those seeds to their corresponding locations.
- */
-typedef struct Almanac Almanac;
-
-struct Range {
+/** @brief Represents a range of seeds. */
+typedef struct Range {
 
     /** @brief The first value of the seed range. */
     int64_t src;
@@ -77,10 +72,7 @@ struct Range {
     /** @brief The length of the seed range. */
     int64_t length;
 
-};
-
-/** @brief Represents a range of seeds. */
-typedef struct Range Range;
+} Range;
 
 /**
  * @brief Deallocates all resources associated with a specified almanac.

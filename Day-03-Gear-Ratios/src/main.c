@@ -7,7 +7,8 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-struct Schematic {
+/** @brief Represents a schematic used for diagnostic purposes. */
+typedef struct Schematic {
 
     /** @brief The grid representation of the schematic. */
     char* grid;
@@ -18,12 +19,10 @@ struct Schematic {
     /** @brief The height of the schematic. */
     int32_t height;
 
-};
+} Schematic;
 
-/** @brief Represents a schematic used for diagnostic purposes. */
-typedef struct Schematic Schematic;
-
-struct Vector {
+/** @brief Represents a two-dimensional vector. */
+typedef struct Vector {
 
     /** @brief The x-coordinate of the vector. */
     int32_t x;
@@ -31,10 +30,7 @@ struct Vector {
     /** @brief The y-coordinate of the vector. */
     int32_t y;
 
-};
-
-/** @brief Represents a two-dimensional vector. */
-typedef struct Vector Vector;
+} Vector;
 
 /** @brief Offsets used to find symbols to the left of a number. */
 static constexpr Vector LEFT_OFFSETS[] = {

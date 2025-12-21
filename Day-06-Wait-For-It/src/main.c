@@ -7,7 +7,8 @@
 #include <stdlib.h>
 #include <tgmath.h>
 
-struct Race {
+/** @brief Represents a boat race. */
+typedef struct Race {
 
     /** @brief The duration of the race. */
     int64_t time;
@@ -15,10 +16,7 @@ struct Race {
     /** @brief The record distance of the race. */
     int64_t distance;
 
-};
-
-/** @brief Represents a boat race. */
-typedef struct Race Race;
+} Race;
 
 /**
  * @brief Parses races from the standard input stream.

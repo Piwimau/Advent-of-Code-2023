@@ -7,16 +7,15 @@
 #include <scu/string.h>
 #include <stdlib.h>
 
-enum Color {
+/** @brief Represents a color of a cube. */
+typedef enum Color {
     COLOR_RED,
     COLOR_GREEN,
     COLOR_BLUE
-};
+} Color;
 
-/** @brief Represents a color of a cube. */
-typedef enum Color Color;
-
-struct Token {
+/** @brief Represents a token used to parse the input. */
+typedef struct Token {
 
     /** @brief The value of the token, e.g., "red". */
     const char* value;
@@ -24,12 +23,10 @@ struct Token {
     /** @brief The length of the token, e.g., three for "red". */
     int64_t length;
 
-};
+} Token;
 
-/** @brief Represents a token used to parse the input. */
-typedef struct Token Token;
-
-struct Game {
+/** @brief Represents a game. */
+typedef struct Game {
 
     /** @brief The unique identifier of the game. */
     int32_t id;
@@ -37,10 +34,7 @@ struct Game {
     /** @brief The minimum cubes of each color required to play the game. */
     int32_t minCubes[COLOR_BLUE + 1];
 
-};
-
-/** @brief Represents a game. */
-typedef struct Game Game;
+} Game;
 
 /** @brief The maximum number of cubes available in each color. */
 static constexpr int32_t MAX_CUBES[COLOR_BLUE + 1] = {
