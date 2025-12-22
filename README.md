@@ -19,7 +19,7 @@ in an unbelievably fast way in order to get some extra points. Personally, I see
 Advent of Code as a fun exercise to do during the Advent season while waiting
 for Christmas. I often use it to learn a new programming language (like I did in
 2021 with `C#`) or some advanced programming concepts. I can only encourage you
-to participate as well - of course in a way that you find fun. Just get started
+to participate as well – of course in a way that you find fun. Just get started
 and learn more about Advent of Code [here](https://adventofcode.com/2023/about).
 
 ## About This Project
@@ -167,13 +167,14 @@ similar in general.
 
 | Day                                     |      Min |      Max |     Mean |   Median | Standard Deviation |
 |-----------------------------------------|---------:|---------:|---------:|---------:|-------------------:|
-| Day 1 - Trebuchet                       | 0.671 ms | 0.923 ms | 0.795 ms | 0.798 ms |           0.068 ms |
-| Day 2 - Cube Conundrum                  | 0.204 ms | 0.555 ms | 0.363 ms | 0.356 ms |           0.094 ms |
-| Day 3 - Gear Ratios                     | 0.577 ms | 0.698 ms | 0.629 ms | 0.611 ms |           0.047 ms |
-| Day 4 - Scratchcards                    | 0.835 ms | 1.248 ms | 0.950 ms | 0.888 ms |           0.130 ms |
-| Day 5 - If You Give A Seed A Fertilizer | 0.168 ms | 0.527 ms | 0.290 ms | 0.271 ms |           0.109 ms |
-| Day 6 - Wait For It                     | 0.090 ms | 0.237 ms | 0.182 ms | 0.190 ms |           0.051 ms |
-| Total                                   | 2.545 ms | 4.188 ms | 3.209 ms | 3.114 ms |           0.499 ms |
+| Day 1 – Trebuchet                       | 0.671 ms | 0.923 ms | 0.795 ms | 0.798 ms |           0.068 ms |
+| Day 2 – Cube Conundrum                  | 0.204 ms | 0.555 ms | 0.363 ms | 0.356 ms |           0.094 ms |
+| Day 3 – Gear Ratios                     | 0.577 ms | 0.698 ms | 0.629 ms | 0.611 ms |           0.047 ms |
+| Day 4 – Scratchcards                    | 0.835 ms | 1.248 ms | 0.950 ms | 0.888 ms |           0.130 ms |
+| Day 5 – If You Give A Seed A Fertilizer | 0.168 ms | 0.527 ms | 0.290 ms | 0.271 ms |           0.109 ms |
+| Day 6 – Wait For It                     | 0.090 ms | 0.237 ms | 0.182 ms | 0.190 ms |           0.051 ms |
+| Day 7 – Camel Cards                     | 0.468 ms | 0.693 ms | 0.535 ms | 0.508 ms |           0.072 ms |
+| Total                                   | 3.013 ms | 4.881 ms | 3.744 ms | 3.622 ms |           0.571 ms |
 
 > [!NOTE]
 > The timings shown above represent actual computation times, not total process
