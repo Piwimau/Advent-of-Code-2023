@@ -236,22 +236,22 @@ static inline void hand_classify_with_joker(Hand* hand) {
 
 /**
  * @brief Parses hands from the standard input stream.
- * 
+ *
  * The input must consist of lines in the following format:
- * 
+ *
  * ```plaintext
  * <Cards> <Bid>
  * ```
- * 
+ *
  * &lt;Cards&gt; is a sequence of five characters representing the cards in the
  * hand, where each character is either a digit from '2' to '9' (corresponding
  * to the number cards) or one of the characters 'T', 'J', 'Q', 'K', or 'A'
  * (corresponding to the ten, jack, queen, king, and ace cards, respectively).
  * &lt;Bid&gt; is a positive integer representing the bid associated with the
  * hand.
- * 
+ *
  * An example for a valid input might be the following:
- * 
+ *
  * ```plaintext
  * 32T3K 765
  * T55J5 684
@@ -262,8 +262,7 @@ static inline void hand_classify_with_joker(Hand* hand) {
  *
  * @param[out] hands A list of the parsed hands on success, otherwise a
  *                   `nullptr`.
- * @return `SCU_ERROR_NONE` on success, or an appropriate `SCUError` code on
- * failure.
+ * @return `SCU_ERROR_NONE` on success, or an appropriate error code on failure.
  */
 static SCUError parse_hands(Hand** hands) {
     SCU_ASSERT(hands != nullptr);
@@ -290,7 +289,7 @@ static SCUError parse_hands(Hand** hands) {
             goto fail;
         }
         hand_classify(&hand);
-        error = scu_list_add(*hands, hand);
+        error = scu_list_add(hands, &hand);
         if (error != SCU_ERROR_NONE) {
             goto fail;
         }

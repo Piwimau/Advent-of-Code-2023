@@ -136,8 +136,7 @@ static void almanac_free(Almanac* almanac) {
  * actual content.
  *
  * @param[out] almanac The parsed almanac on success, otherwise the default.
- * @return `SCU_ERROR_NONE` on success, or an appropriate `SCUError` code on
- * failure.
+ * @return `SCU_ERROR_NONE` on success, or an appropriate error code on failure.
  */
 static SCUError almanac_parse(Almanac* almanac) {
     SCU_ASSERT(almanac != nullptr);
@@ -164,7 +163,7 @@ static SCUError almanac_parse(Almanac* almanac) {
                 error = SCU_ERROR_INVALID_FORMAT;
                 goto fail;
             }
-            error = scu_list_add(currentMap->mappings, mapping);
+            error = scu_list_add(&currentMap->mappings, &mapping);
             if (error != SCU_ERROR_NONE) {
                 goto fail;
             }
@@ -190,7 +189,7 @@ static SCUError almanac_parse(Almanac* almanac) {
             int64_t seed;
             int64_t read;
             while (scu_sscanf(temp, "%" SCNd64 "%lln", &seed, &read) == 1) {
-                error = scu_list_add(almanac->seeds, seed);
+                error = scu_list_add(&almanac->seeds, &seed);
                 if (error != SCU_ERROR_NONE) {
                     goto fail;
                 }
@@ -200,7 +199,7 @@ static SCUError almanac_parse(Almanac* almanac) {
         else {
             bool matchedMap = false;
             for (int32_t i = 0; i < SCU_COUNTOF(MAP_HEADERS); i++) {
-                if (scu_str_equals(line, MAP_HEADERS[i])) {
+                if (scu_strcmp(line, MAP_HEADERS[i]) == 0) {
                     matchedMap = true;
                     // There must be only one of each map, so check if we
                     // already parsed one earlier and fail if so.
@@ -303,11 +302,11 @@ static int64_t almanac_lowest_location_ranges(const Almanac* almanac) {
             .src = almanac->seeds[i],
             .length = almanac->seeds[i + 1]
         };
-        scu_stack_push(oldRanges, oldRange);
+        scu_stack_push(oldRanges, &oldRange);
         const Map* map;
         SCU_ARRAY_FOREACH(map, almanac->maps) {
             scu_stack_clear(newRanges);
-            while (scu_stack_try_pop(oldRanges, oldRange)) {
+            while (scu_stack_try_pop(oldRanges, &oldRange)) {
                 int64_t oldStart = oldRange.src;
                 int64_t oldEnd = oldRange.src + oldRange.length - 1;
                 bool matchedRange = false;
@@ -325,25 +324,25 @@ static int64_t almanac_lowest_location_ranges(const Almanac* almanac) {
                                 .src = oldStart,
                                 .length = overlapStart - oldStart
                             };
-                            scu_stack_push(oldRanges, before);
+                            scu_stack_push(oldRanges, &before);
                         }
                         Range translated = {
                             .src = overlapStart + (mapping->dest - mapping->src),
                             .length = overlapEnd - overlapStart
                         };
-                        scu_stack_push(newRanges, translated);
+                        scu_stack_push(newRanges, &translated);
                         if (oldEnd > overlapEnd) {
                             Range after = {
                                 .src = overlapEnd,
                                 .length = oldEnd - overlapEnd
                             };
-                            scu_stack_push(oldRanges, after);
+                            scu_stack_push(oldRanges, &after);
                         }
                         break;
                     }
                 }
                 if (!matchedRange) {
-                    scu_stack_push(newRanges, oldRange);
+                    scu_stack_push(newRanges, &oldRange);
                 }
             }
             SCUStack* temp = oldRanges;

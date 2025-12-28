@@ -47,8 +47,7 @@ typedef struct Race {
  * or more spaces.
  *
  * @param[out] races A list of the parsed races, or `nullptr` on failure.
- * @return `SCU_ERROR_NONE` on success, or an appropriate `SCUError` code on
- * failure.
+ * @return `SCU_ERROR_NONE` on success, or an appropriate error code on failure.
  */
 static SCUError parse_races(Race** races) {
     SCU_ASSERT(races != nullptr);
@@ -72,7 +71,7 @@ static SCUError parse_races(Race** races) {
     int64_t time;
     while (scu_sscanf(temp, "%" SCNd64 "%lln", &time, &read) == 1) {
         Race race = { .time = time };
-        error = scu_list_add(*races, race);
+        error = scu_list_add(races, &race);
         if (error != SCU_ERROR_NONE) {
             goto fail;
         }

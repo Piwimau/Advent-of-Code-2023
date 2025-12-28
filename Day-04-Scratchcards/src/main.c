@@ -53,7 +53,7 @@ static bool card_parse(const char* restrict line, Card* restrict card) {
         scu_equal_int32
     );
     while (scu_sscanf(line, "%" SCNd32 "%lln", &number, &read) == 1) {
-        scu_hash_set_add(winningNumbers, number);
+        scu_hash_set_add(winningNumbers, &number);
         line += read;
     }
     if (scu_sscanf(line, " | %lln", &read) != 0) {
@@ -63,7 +63,7 @@ static bool card_parse(const char* restrict line, Card* restrict card) {
     line += read;
     card->winningNumbers = 0;
     while (scu_sscanf(line, "%" SCNd32 "%lln", &number, &read) == 1) {
-        if (scu_hash_set_contains(winningNumbers, number)) {
+        if (scu_hash_set_contains(winningNumbers, &number)) {
             card->winningNumbers++;
         }
         line += read;
@@ -102,7 +102,7 @@ static int32_t total_cards(const Card* cards) {
         count
     );
     for (int64_t i = 0; i < count; i++) {
-        scu_list_add(cardCounts, (int32_t) { 1 });
+        scu_list_add(&cardCounts, &(int32_t) { 1 });
     }
     for (int64_t i = 0; i < count; i++) {
         for (int64_t j = 0; j < cards[i].winningNumbers; j++) {
@@ -141,7 +141,7 @@ int main() {
             scu_free(line);
             return EXIT_FAILURE;
         }
-        scu_list_add(cards, card);
+        scu_list_add(&cards, &card);
     }
     scu_free(line);
     if (error != SCU_ERROR_END_OF_FILE) {
