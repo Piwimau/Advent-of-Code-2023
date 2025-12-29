@@ -175,7 +175,8 @@ similar in general.
 | Day 6 – Wait For It                     | 0.090 ms | 0.237 ms | 0.182 ms | 0.190 ms |           0.051 ms |
 | Day 7 – Camel Cards                     | 0.468 ms | 0.693 ms | 0.535 ms | 0.508 ms |           0.072 ms |
 | Day 8 – Haunted Wasteland               | 2.239 ms | 2.654 ms | 2.368 ms | 2.360 ms |           0.124 ms |
-| Total                                   | 5.252 ms | 7.535 ms | 6.112 ms | 5.982 ms |           0.695 ms |
+| Day 9 – Mirage Maintenance              | 0.665 ms | 0.934 ms | 0.757 ms | 0.756 ms |           0.090 ms |
+| Total                                   | 5.917 ms | 8.469 ms | 6.869 ms | 6.738 ms |           0.785 ms |
 
 > [!NOTE]
 > The timings shown above represent actual computation times, not total process

@@ -380,6 +380,9 @@ static int64_t network_required_steps_all(const Network* network) {
  *
  * Note that this function does not deallocate `network` itself.
  *
+ * @warning The behavior is undefined if `network` is used after it has been
+ * deallocated.
+ *
  * @param[in, out] network The network to deallocate all resources of.
  */
 static void network_free(Network* network) {
