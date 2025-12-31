@@ -56,8 +56,9 @@ static uint64_t hash_node_name(const void* value) {
     SCU_ASSERT(value != nullptr);
     const unsigned char* s = (const unsigned char*) value;
     uint64_t hash = UINT64_C(0xCBF29CE484222325);
-    for (int64_t i = 0; (i < SCU_SIZEOF(NodeName)) && (s[i] != '\0'); i++) {
-        hash ^= s[i];
+    const unsigned char* c;
+    SCU_STR_FOREACH(c, s) {
+        hash ^= *c;
         hash *= UINT64_C(0x100000001B3);
     }
     return hash;
@@ -191,15 +192,16 @@ static SCUError network_parse(Network* network) {
     if (error != SCU_ERROR_NONE) {
         goto fail;
     }
-    for (int64_t i = 0; line[i] != '\0'; i++) {
+    const char* c;
+    SCU_STR_FOREACH(c, line) {
         Direction direction;
-        if (direction_parse(line[i], &direction)) {
+        if (direction_parse(*c, &direction)) {
             error = scu_list_add(&network->directions, &direction);
             if (error != SCU_ERROR_NONE) {
                 goto fail;
             }
         }
-        else if (line[i] != '\n') {
+        else if (*c != '\n') {
             error = SCU_ERROR_INVALID_FORMAT;
             goto fail;
         }

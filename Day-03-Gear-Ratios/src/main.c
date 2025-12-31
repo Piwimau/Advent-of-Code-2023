@@ -114,9 +114,10 @@ static bool schematic_parse(
         return false;
     }
     int32_t height = size / width;
-    for (int32_t i = 0; grid[i] != '\0'; i++) {
-        if (grid[i] == '\n') {
-            grid[i] = '.';
+    char* c;
+    SCU_STR_FOREACH(c, grid) {
+        if (*c == '\n') {
+            *c = '.';
         }
     }
     grid[size - 1] = '.';

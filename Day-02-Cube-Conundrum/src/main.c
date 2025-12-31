@@ -90,35 +90,37 @@ static inline bool game_parse(const char* restrict line, Game* restrict game) {
     if (scu_sscanf(line, "Game %" SCNd32 ": %lln", &game->id, &read) != 1) {
         return false;
     }
-    for (int64_t i = read; line[i] != '\0'; i++) {
-        if ((line[i] == ' ') || (line[i] == ',') || (line[i] == ';')) {
+    line += read;
+    const char* c;
+    SCU_STR_FOREACH(c, line) {
+        if ((*c == ' ') || (*c == ',') || (*c == ';')) {
             continue;
         }
-        if ((line[i] < '0') || (line[i] > '9')) {
+        if ((*c < '0') || (*c > '9')) {
             return false;
         }
         int32_t cubes = 0;
-        if ((scu_sscanf(line + i, "%" SCNd32 "%lln", &cubes, &read) != 1)
+        if ((scu_sscanf(c, "%" SCNd32 "%lln", &cubes, &read) != 1)
                 || (cubes < 0)) {
             return false;
         }
-        i += read;
+        c += read;
         // The number must be separated from the color by a single space.
-        if (line[i] != ' ') {
+        if (*c != ' ') {
             return false;
         }
-        i++;
+        c++;
         bool matchedColor = false;
         const Color* color;
         SCU_ARRAY_FOREACH(color, COLORS) {
             const Token* token = &TOKENS[*color];
-            if (scu_strncmp(line + i, token->value, token->length) == 0) {
+            if (scu_strncmp(c, token->value, token->length) == 0) {
                 matchedColor = true;
                 game->minCubes[*color] = SCU_MAX(game->minCubes[*color], cubes);
-                // Advance the index to the end of the matched color token, but
-                // one less than the actual length, as it will be incremented by
-                // the main loop as well.
-                i += token->length - 1;
+                // Advance to the end of the matched color token, but one less
+                // than the actual length, as it will be incremented by the main
+                // loop as well.
+                c += token->length - 1;
                 break;
             }
         }

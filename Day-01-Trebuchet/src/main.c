@@ -67,9 +67,10 @@ static inline bool find_calibration_values(
     int32_t lastDigit = -1;
     int32_t firstAlnumDigit = -1;
     int32_t lastAlnumDigit = -1;
-    for (int64_t i = 0; s[i] != '\0'; i++) {
-        if ((s[i] >= '1') && (s[i] <= '9')) {
-            int32_t digit = s[i] - '0';
+    const char* c;
+    SCU_STR_FOREACH(c, s) {
+        if ((*c >= '1') && (*c <= '9')) {
+            int32_t digit = *c - '0';
             if (firstDigit == -1) {
                 firstDigit = digit;
             }
@@ -82,7 +83,7 @@ static inline bool find_calibration_values(
         else {
             const Digit* digit;
             SCU_ARRAY_FOREACH(digit, DIGITS) {
-                if (scu_strncmp(s + i, digit->token, digit->length) == 0) {
+                if (scu_strncmp(c, digit->token, digit->length) == 0) {
                     if (firstAlnumDigit == -1) {
                         firstAlnumDigit = digit->value;
                     }
