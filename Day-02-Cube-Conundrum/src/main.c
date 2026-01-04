@@ -1,4 +1,5 @@
-#include <inttypes.h>
+#define SCU_SHORT_ALIASES
+
 #include <scu/alloc.h>
 #include <scu/array.h>
 #include <scu/assert.h>
@@ -6,6 +7,7 @@
 #include <scu/io.h>
 #include <scu/math.h>
 #include <scu/string.h>
+#include <scu/types.h>
 #include <stdlib.h>
 
 /** @brief Represents a color of a cube. */
@@ -22,7 +24,7 @@ typedef struct Token {
     const char* value;
 
     /** @brief The length of the token, e.g., three for "red". */
-    int64_t length;
+    isize length;
 
 } Token;
 
@@ -30,15 +32,15 @@ typedef struct Token {
 typedef struct Game {
 
     /** @brief The unique identifier of the game. */
-    int32_t id;
+    i32 id;
 
     /** @brief The minimum cubes of each color required to play the game. */
-    int32_t minCubes[COLOR_BLUE + 1];
+    i32 minCubes[COLOR_BLUE + 1];
 
 } Game;
 
 /** @brief The maximum number of cubes available in each color. */
-static constexpr int32_t MAX_CUBES[COLOR_BLUE + 1] = {
+static constexpr i32 MAX_CUBES[COLOR_BLUE + 1] = {
     [COLOR_RED] = 12,
     [COLOR_GREEN] = 13,
     [COLOR_BLUE] = 14
@@ -85,42 +87,41 @@ static const Token TOKENS[COLOR_BLUE + 1] = {
 static inline bool game_parse(const char* restrict line, Game* restrict game) {
     SCU_ASSERT(line != nullptr);
     SCU_ASSERT(game != nullptr);
-    *game = (Game) { .id = -1, .minCubes = { 0, 0, 0 } };
-    int64_t read = 0;
-    if (scu_sscanf(line, "Game %" SCNd32 ": %lln", &game->id, &read) != 1) {
+    *game = (Game) { .id = -1, .minCubes = { -1, -1, -1 } };
+    isize read = 0;
+    if (scu_sscanf(line, "Game %" I32_SCND ": %" ISIZE_SCNN, &game->id, &read) != 1) {
         return false;
     }
     line += read;
-    const char* c;
-    SCU_STR_FOREACH(c, line) {
-        if ((*c == ' ') || (*c == ',') || (*c == ';')) {
+    for (isize i = 0; line[i] != '\0'; i++) {
+        if ((line[i] == ' ') || (line[i] == ',') || (line[i] == ';')) {
             continue;
         }
-        if ((*c < '0') || (*c > '9')) {
+        if ((line[i] < '0') || (line[i] > '9')) {
             return false;
         }
-        int32_t cubes = 0;
-        if ((scu_sscanf(c, "%" SCNd32 "%lln", &cubes, &read) != 1)
+        i32 cubes = 0;
+        if ((scu_sscanf(line + i, "%" I32_SCND "%" ISIZE_SCNN, &cubes, &read) != 1)
                 || (cubes < 0)) {
             return false;
         }
-        c += read;
+        i += read;
         // The number must be separated from the color by a single space.
-        if (*c != ' ') {
+        if (line[i] != ' ') {
             return false;
         }
-        c++;
+        i++;
         bool matchedColor = false;
         const Color* color;
         SCU_ARRAY_FOREACH(color, COLORS) {
             const Token* token = &TOKENS[*color];
-            if (scu_strncmp(c, token->value, token->length) == 0) {
+            if (scu_strncmp(line + i, token->value, token->length) == 0) {
                 matchedColor = true;
                 game->minCubes[*color] = SCU_MAX(game->minCubes[*color], cubes);
                 // Advance to the end of the matched color token, but one less
                 // than the actual length, as it will be incremented by the main
                 // loop as well.
-                c += token->length - 1;
+                i += token->length - 1;
                 break;
             }
         }
@@ -153,7 +154,7 @@ static inline bool game_is_possible(const Game* game) {
  * @param[in] game The game to calculate the power for.
  * @return The power of the game.
  */
-static inline int32_t game_power(const Game* game) {
+static inline i32 game_power(const Game* game) {
     SCU_ASSERT(game != nullptr);
     return game->minCubes[COLOR_RED] * game->minCubes[COLOR_GREEN]
         * game->minCubes[COLOR_BLUE];
@@ -162,13 +163,13 @@ static inline int32_t game_power(const Game* game) {
 int main() {
     SCUError error = SCU_ERROR_NONE;
     char* line = nullptr;
-    int64_t size = 0;
-    int32_t sumOfIds = 0;
-    int32_t sumOfPowers = 0;
+    isize size = 0;
+    i32 sumOfIds = 0;
+    i32 sumOfPowers = 0;
     while ((error = scu_readln(&line, &size)) == SCU_ERROR_NONE) {
         // Replace the newline (if present) to simplify parsing and avoid an
         // ugly line break if an error occurs.
-        int64_t newlineIndex = scu_str_index_of(line, '\n');
+        isize newlineIndex = scu_str_index_of(line, '\n');
         if (newlineIndex != -1) {
             line[newlineIndex] = '\0';
         }
@@ -197,11 +198,11 @@ int main() {
         return EXIT_FAILURE;
     }
     scu_printf(
-        "The sum of the IDs of the possible games is %" PRId32 ".\n",
+        "The sum of the IDs of the possible games is %" I32_PRID ".\n",
         sumOfIds
     );
     scu_printf(
-        "The sum of the powers of all games is %" PRId32 ".\n",
+        "The sum of the powers of all games is %" I32_PRID ".\n",
         sumOfPowers
     );
     return EXIT_SUCCESS;

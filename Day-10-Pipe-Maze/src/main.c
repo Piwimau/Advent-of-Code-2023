@@ -1,4 +1,5 @@
-#include <inttypes.h>
+#define SCU_SHORT_ALIASES
+
 #include <scu/alloc.h>
 #include <scu/array.h>
 #include <scu/assert.h>
@@ -7,7 +8,7 @@
 #include <scu/io.h>
 #include <scu/list.h>
 #include <scu/string.h>
-#include <stdint.h>
+#include <scu/types.h>
 #include <stdlib.h>
 
 /** @brief Represents a cardinal direction. */
@@ -34,10 +35,10 @@ typedef enum Tile {
 typedef struct Position {
 
     /** @brief The x-coordinate of the position. */
-    int64_t x;
+    isize x;
 
     /** @brief The y-coordinate of the position. */
-    int64_t y;
+    isize y;
 
 } Position;
 
@@ -53,10 +54,10 @@ typedef struct Grid {
     Tile* tiles;
 
     /** @brief The width of the grid. */
-    int64_t width;
+    isize width;
 
     /** @brief The height of the grid. */
-    int64_t height;
+    isize height;
 
     /** @brief The starting position in the grid. */
     Position start;
@@ -67,10 +68,10 @@ typedef struct Grid {
 typedef struct GridAnalysis {
 
     /** @brief The distance to the farthest point in the loop of the grid. */
-    int64_t farthestDistance;
+    i64 farthestDistance;
 
     /** @brief The number of tiles enclosed by the loop of the grid. */
-    int64_t enclosedTiles;
+    i64 enclosedTiles;
 
 } GridAnalysis;
 
@@ -185,12 +186,12 @@ static Position position_neighbor(Position position, Direction direction) {
  * @param[in] value The position to hash.
  * @return A hash for the specified position.
  */
-static uint64_t hash_position(const void* value) {
+static usize hash_position(const void* value) {
     SCU_ASSERT(value != nullptr);
     const Position* position = (const Position*) value;
-    uint64_t hash = 0;
-    hash = scu_hash_combine(hash, scu_hash_int64(&position->x));
-    hash = scu_hash_combine(hash, scu_hash_int64(&position->y));
+    usize hash = 0;
+    hash = scu_hash_combine(hash, scu_hash_isize(&position->x));
+    hash = scu_hash_combine(hash, scu_hash_isize(&position->y));
     return hash;
 }
 
@@ -311,14 +312,14 @@ static SCUError grid_parse(Grid* grid) {
     bool foundWidth = false;
     bool foundStart = false;
     char* line = nullptr;
-    int64_t size = 0;
+    isize size = 0;
     SCUError error;
     while ((error = scu_readln(&line, &size)) == SCU_ERROR_NONE) {
-        int64_t newlineIndex = scu_str_index_of(line, '\n');
+        isize newlineIndex = scu_str_index_of(line, '\n');
         if (newlineIndex != -1) {
             line[newlineIndex] = '\0';
         }
-        int64_t width = scu_strlen(line);
+        isize width = scu_strlen(line);
         if (width == 0) {
             error = SCU_ERROR_INVALID_FORMAT;
             goto fail;
@@ -331,21 +332,17 @@ static SCUError grid_parse(Grid* grid) {
             error = SCU_ERROR_INVALID_FORMAT;
             goto fail;
         }
-        const char* c;
-        SCU_STR_FOREACH(c, line) {
+        for (isize i = 0; line[i] != '\0'; i++) {
             Tile tile;
-            if (tile_parse(*c, &tile)) {
+            if (tile_parse(line[i], &tile)) {
                 error = scu_list_add(&grid->tiles, &tile);
                 if (error != SCU_ERROR_NONE) {
                     goto fail;
                 }
             }
-            else if (*c == 'S') {
+            else if (line[i] == 'S') {
                 if (!foundStart) {
-                    grid->start = (Position) {
-                        .x = c - line,
-                        .y = grid->height
-                    };
+                    grid->start = (Position) { .x = i, .y = grid->height };
                     foundStart = true;
                     // We simply add a ground tile for now, but we figure out
                     // the actual tile later once the grid is fully parsed.
@@ -459,9 +456,9 @@ static GridAnalysis grid_analyze(const Grid* grid) {
     // At this point, the distance records the entire length of the loop, so the
     // distance to the farthest point is simply half of that.
     analysis.farthestDistance /= 2;
-    for (int64_t y = 0; y < grid->height; y++) {
+    for (isize y = 0; y < grid->height; y++) {
         bool isEnclosed = false;
-        for (int64_t x = 0; x < grid->width; x++) {
+        for (isize x = 0; x < grid->width; x++) {
             current = (Position) { .x = x, .y = y };
             if (scu_hash_set_contains(loop, &current)) {
                 if (grid_is_tile(grid, current, TILE_PIPE_NORTH_SOUTH)
@@ -495,11 +492,11 @@ int main() {
     }
     GridAnalysis analysis = grid_analyze(&grid);
     scu_printf(
-        "The distance to the farthest point in the loop is %" PRId64 ".\n",
+        "The distance to the farthest point in the loop is %" I64_PRID ".\n",
         analysis.farthestDistance
     );
     scu_printf(
-        "The number of tiles enclosed by the loop is %" PRId64 ".\n",
+        "The number of tiles enclosed by the loop is %" I64_PRID ".\n",
         analysis.enclosedTiles
     );
     grid_free(&grid);

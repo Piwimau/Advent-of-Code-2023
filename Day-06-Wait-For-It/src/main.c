@@ -1,10 +1,11 @@
-#include <inttypes.h>
+#define SCU_SHORT_ALIASES
+
 #include <scu/alloc.h>
 #include <scu/assert.h>
 #include <scu/common.h>
 #include <scu/io.h>
 #include <scu/list.h>
-#include <stdint.h>
+#include <scu/types.h>
 #include <stdlib.h>
 #include <tgmath.h>
 
@@ -12,10 +13,10 @@
 typedef struct Race {
 
     /** @brief The duration of the race. */
-    int64_t time;
+    i64 time;
 
     /** @brief The record distance of the race. */
-    int64_t distance;
+    i64 distance;
 
 } Race;
 
@@ -56,20 +57,20 @@ static SCUError parse_races(Race** races) {
         return SCU_ERROR_OUT_OF_MEMORY;
     }
     char* line = nullptr;
-    int64_t size = 0;
+    isize size = 0;
     SCUError error = scu_readln(&line, &size);
     if (error != SCU_ERROR_NONE) {
         goto fail;
     }
-    int64_t read;
+    isize read;
     const char* temp = line;
-    if (scu_sscanf(temp, "Time:%lln", &read) != 0) {
+    if (scu_sscanf(temp, "Time:%" ISIZE_SCNN, &read) != 0) {
         error = SCU_ERROR_INVALID_FORMAT;
         goto fail;
     }
     temp += read;
-    int64_t time;
-    while (scu_sscanf(temp, "%" SCNd64 "%lln", &time, &read) == 1) {
+    i64 time;
+    while (scu_sscanf(temp, "%" I64_SCND "%" ISIZE_SCNN, &time, &read) == 1) {
         Race race = { .time = time };
         error = scu_list_add(races, &race);
         if (error != SCU_ERROR_NONE) {
@@ -82,14 +83,14 @@ static SCUError parse_races(Race** races) {
         goto fail;
     }
     temp = line;
-    if (scu_sscanf(temp, "Distance:%lln", &read) != 0) {
+    if (scu_sscanf(temp, "Distance:%" ISIZE_SCNN, &read) != 0) {
         error = SCU_ERROR_INVALID_FORMAT;
         goto fail;
     }
     temp += read;
     Race* race;
     SCU_LIST_FOREACH(race, *races) {
-        if (scu_sscanf(temp, "%" SCNd32 "%lln", &race->distance, &read) != 1) {
+        if (scu_sscanf(temp, "%" I64_SCND "%" ISIZE_SCNN, &race->distance, &read) != 1) {
             error = SCU_ERROR_INVALID_FORMAT;
             goto fail;
         }
@@ -110,12 +111,12 @@ fail:
  * @param[in] race The race to examine.
  * @return The number of possibilities to win the specified race.
  */
-static inline int64_t race_win_possibilities(const Race* race) {
+static inline i64 race_win_possibilities(const Race* race) {
     SCU_ASSERT(race != nullptr);
-    double time = (double) race->time;
-    double d = (time * time) - (4.0 * (double) race->distance);
-    int64_t minTime = (int64_t) floor((time - sqrt(d)) / 2.0) + 1;
-    int64_t maxTime = (int64_t) ceil((time + sqrt(d)) / 2.0) - 1;
+    f64 time = (f64) race->time;
+    f64 d = (time * time) - (4.0 * (f64) race->distance);
+    i64 minTime = (i64) floor((time - sqrt(d)) / 2.0) + 1;
+    i64 maxTime = (i64) ceil((time + sqrt(d)) / 2.0) - 1;
     return maxTime - minTime + 1;
 }
 
@@ -129,10 +130,10 @@ static inline int64_t race_win_possibilities(const Race* race) {
  * @return The product of the number of possibilities to win each race in the
  * specified list of races.
  */
-static int64_t product_of_win_possibilities_individual(const Race* races) {
+static i64 product_of_win_possibilities_individual(const Race* races) {
     SCU_ASSERT(races != nullptr);
     SCU_ASSERT(scu_list_count(races) > 0);
-    int64_t product = 1;
+    i64 product = 1;
     const Race* race;
     SCU_LIST_FOREACH(race, races) {
         product *= race_win_possibilities(race);
@@ -150,20 +151,20 @@ static int64_t product_of_win_possibilities_individual(const Race* races) {
  * @return The number of possibilities to win the single large race that
  * combines all races in the specified list of races, or -1 on failure.
  */
-static int64_t win_possibilities_single_combined(const Race* races) {
+static i64 win_possibilities_single_combined(const Race* races) {
     SCU_ASSERT(races != nullptr);
     SCU_ASSERT(scu_list_count(races) > 0);
     char* temp = nullptr;
-    int64_t size = 0;
+    isize size = 0;
     const Race* race;
     SCU_LIST_FOREACH(race, races) {
-        SCUError error = scu_rasnprintf(&temp, &size, "%" PRId32, race->time);
+        SCUError error = scu_rasnprintf(&temp, &size, "%" I64_PRID, race->time);
         if (error != SCU_ERROR_NONE) {
             goto fail;
         }
     }
-    int64_t time;
-    if (scu_sscanf(temp, "%" SCNd64, &time) != 1) {
+    i64 time;
+    if (scu_sscanf(temp, "%" I64_SCND, &time) != 1) {
         goto fail;
     }
     temp[0] = '\0';
@@ -171,15 +172,15 @@ static int64_t win_possibilities_single_combined(const Race* races) {
         SCUError error = scu_rasnprintf(
             &temp,
             &size,
-            "%" PRId32,
+            "%" I64_PRID,
             race->distance
         );
         if (error != SCU_ERROR_NONE) {
             goto fail;
         }
     }
-    int64_t distance;
-    if (scu_sscanf(temp, "%" SCNd64, &distance) != 1) {
+    i64 distance;
+    if (scu_sscanf(temp, "%" I64_SCND, &distance) != 1) {
         goto fail;
     }
     scu_free(temp);
@@ -201,15 +202,15 @@ int main() {
         );
         return EXIT_FAILURE;
     }
-    int64_t productIndividual = product_of_win_possibilities_individual(races);
-    int64_t singleCombined = win_possibilities_single_combined(races);
+    i64 productIndividual = product_of_win_possibilities_individual(races);
+    i64 singleCombined = win_possibilities_single_combined(races);
     scu_printf(
         "The product of the number of possibilities to win the individual "
-            "races is %" PRId64".\n",
+            "races is %" I64_PRID".\n",
         productIndividual
     );
     scu_printf(
-        "There are %" PRId64 " possibilities to win the single combined "
+        "There are %" I64_PRID " possibilities to win the single combined "
             "race.\n",
         singleCombined
     );

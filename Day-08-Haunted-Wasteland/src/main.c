@@ -1,4 +1,5 @@
-#include <inttypes.h>
+#define SCU_SHORT_ALIASES
+
 #include <scu/alloc.h>
 #include <scu/assert.h>
 #include <scu/common.h>
@@ -6,7 +7,7 @@
 #include <scu/io.h>
 #include <scu/list.h>
 #include <scu/string.h>
-#include <stdint.h>
+#include <scu/types.h>
 #include <stdlib.h>
 
 /** @brief Represents a direction for navigating a network of nodes. */
@@ -52,16 +53,8 @@ typedef struct Network {
  * @param[in] value A pointer to the node name to hash.
  * @return A hash for the specified node name.
  */
-static uint64_t hash_node_name(const void* value) {
-    SCU_ASSERT(value != nullptr);
-    const unsigned char* s = (const unsigned char*) value;
-    uint64_t hash = UINT64_C(0xCBF29CE484222325);
-    const unsigned char* c;
-    SCU_STR_FOREACH(c, s) {
-        hash ^= *c;
-        hash *= UINT64_C(0x100000001B3);
-    }
-    return hash;
+static usize hash_node_name(const void* value) {
+    return scu_hash_bytes(value, SCU_SIZEOF(NodeName));
 }
 
 /**
@@ -187,21 +180,20 @@ static SCUError network_parse(Network* network) {
         goto fail;
     }
     char* line = nullptr;
-    int64_t size = 0;
+    isize size = 0;
     error = scu_readln(&line, &size);
     if (error != SCU_ERROR_NONE) {
         goto fail;
     }
-    const char* c;
-    SCU_STR_FOREACH(c, line) {
+    for (isize i = 0; line[i] != '\0'; i++) {
         Direction direction;
-        if (direction_parse(*c, &direction)) {
+        if (direction_parse(line[i], &direction)) {
             error = scu_list_add(&network->directions, &direction);
             if (error != SCU_ERROR_NONE) {
                 goto fail;
             }
         }
-        else if (*c != '\n') {
+        else if (line[i] != '\n') {
             error = SCU_ERROR_INVALID_FORMAT;
             goto fail;
         }
@@ -216,7 +208,7 @@ static SCUError network_parse(Network* network) {
     }
     while ((error = scu_readln(&line, &size)) == SCU_ERROR_NONE) {
         Node node;
-        int64_t read = scu_sscanf(
+        isize read = scu_sscanf(
             line,
             "%3s = (%3s, %3s)\n",
             node.name,
@@ -263,7 +255,7 @@ fail:
  * @param[in] dest    The name of the destination node.
  * @return The number of steps required to reach the node named `dest`.
  */
-static int64_t network_required_steps(
+static i64 network_required_steps(
     const Network* network,
     const NodeName* dest
 ) {
@@ -273,8 +265,8 @@ static int64_t network_required_steps(
         network->nodes,
         &(NodeName) { "AAA" }
     );
-    int64_t count = scu_list_count(network->directions);
-    int64_t steps = 0;
+    isize count = scu_list_count(network->directions);
+    i64 steps = 0;
     while (scu_strcmp(current->name, *dest) != 0) {
         Direction direction = network->directions[steps % count];
         if (direction == DIRECTION_LEFT) {
@@ -304,15 +296,15 @@ static int64_t network_required_steps(
  * @param[in] src     The name of the source node.
  * @return The number of steps required to reach any end node.
  */
-static inline int64_t network_required_steps_any(
+static inline i64 network_required_steps_any(
     const Network* network,
     const NodeName* src
 ) {
     SCU_ASSERT(network != nullptr);
     SCU_ASSERT(src != nullptr);
     const Node* current = scu_hash_map_get(network->nodes, src);
-    int64_t count = scu_list_count(network->directions);
-    int64_t steps = 0;
+    isize count = scu_list_count(network->directions);
+    i64 steps = 0;
     while (!scu_str_ends_with(current->name, 'Z')) {
         Direction direction = network->directions[steps % count];
         if (direction == DIRECTION_LEFT) {
@@ -327,21 +319,21 @@ static inline int64_t network_required_steps_any(
 }
 
 /**
- * @brief Returns the least common multiple of two specified `int64_t` values.
+ * @brief Returns the least common multiple of two specified `i64` values.
  *
- * @param[in] a The first `int64_t` value.
- * @param[in] b The second `int64_t` value.
+ * @param[in] a The first value.
+ * @param[in] b The second value.
  * @return The least common multiple of `a` and `b`.
  */
-static inline int64_t lcm(int64_t a, int64_t b) {
-    int64_t tempA = a;
-    int64_t tempB = b;
+static inline i64 lcm(i64 a, i64 b) {
+    i64 tempA = a;
+    i64 tempB = b;
     while (tempB != 0) {
-        int64_t temp = tempB;
+        i64 temp = tempB;
         tempB = tempA % tempB;
         tempA = temp;
     }
-    int64_t gcd = tempA;
+    i64 gcd = tempA;
     return (a / gcd) * b;
 }
 
@@ -359,9 +351,9 @@ static inline int64_t lcm(int64_t a, int64_t b) {
  * @param[in] network The network to navigate.
  * @return The number of steps required to reach all end nodes simultaneously.
  */
-static int64_t network_required_steps_all(const Network* network) {
+static i64 network_required_steps_all(const Network* network) {
     SCU_ASSERT(network != nullptr);
-    int64_t steps = 1;
+    i64 steps = 1;
     SCUHashMapEntry entry;
     SCU_HASH_MAP_FOREACH(entry, network->nodes) {
         Node* node = entry.value;
@@ -407,17 +399,14 @@ int main() {
         );
         return EXIT_FAILURE;
     }
-    int64_t requiredSteps = network_required_steps(
-        &network,
-        &(NodeName) { "ZZZ" }
-    );
-    int64_t requiredStepsAll = network_required_steps_all(&network);
+    i64 requiredSteps = network_required_steps(&network, &(NodeName) { "ZZZ" });
+    i64 requiredStepsAll = network_required_steps_all(&network);
     scu_printf(
-        "It takes %" PRId64 " steps to reach node 'ZZZ'.\n",
+        "It takes %" I64_PRID " steps to reach node 'ZZZ'.\n",
         requiredSteps
     );
     scu_printf(
-        "It takes %" PRId64 " steps to reach all nodes ending with 'Z' "
+        "It takes %" I64_PRID " steps to reach all nodes ending with 'Z' "
             "simultaneously.\n",
         requiredStepsAll
     );

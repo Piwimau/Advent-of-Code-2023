@@ -1,9 +1,11 @@
-#include <inttypes.h>
+#define SCU_SHORT_ALIASES
+
 #include <scu/alloc.h>
 #include <scu/array.h>
 #include <scu/assert.h>
 #include <scu/io.h>
 #include <scu/string.h>
+#include <scu/types.h>
 #include <stdint.h>
 #include <stdlib.h>
 
@@ -14,10 +16,10 @@ typedef struct Schematic {
     char* grid;
 
     /** @brief The width of the schematic. */
-    int32_t width;
+    isize width;
 
     /** @brief The height of the schematic. */
-    int32_t height;
+    isize height;
 
 } Schematic;
 
@@ -25,10 +27,10 @@ typedef struct Schematic {
 typedef struct Vector {
 
     /** @brief The x-coordinate of the vector. */
-    int32_t x;
+    isize x;
 
     /** @brief The y-coordinate of the vector. */
-    int32_t y;
+    isize y;
 
 } Vector;
 
@@ -65,7 +67,7 @@ static constexpr Vector OFFSETS[] = {
 };
 
 /** @brief The total number of numbers associated with each gear. */
-static constexpr int32_t NUMBERS_PER_GEAR = 2;
+static constexpr i32 NUMBERS_PER_GEAR = 2;
 
 /**
  * @brief Determines whether two vectors are equal.
@@ -104,20 +106,19 @@ static bool schematic_parse(
 ) {
     SCU_ASSERT(grid != nullptr);
     SCU_ASSERT(schematic != nullptr);
-    int32_t width = (int32_t) scu_str_index_of(grid, '\n');
+    isize width = scu_str_index_of(grid, '\n');
     if (width == -1) {
         return false;
     }
     width++;
-    int32_t size = (int32_t) scu_strlen(grid) + 1;
+    isize size = scu_strlen(grid) + 1;
     if ((size % width) != 0) {
         return false;
     }
-    int32_t height = size / width;
-    char* c;
-    SCU_STR_FOREACH(c, grid) {
-        if (*c == '\n') {
-            *c = '.';
+    isize height = size / width;
+    for (isize i = 0; grid[i] != '\0'; i++) {
+        if (grid[i] == '\n') {
+            grid[i] = '.';
         }
     }
     grid[size - 1] = '.';
@@ -314,17 +315,17 @@ static inline bool schematic_try_get_start_of_number(
  * @param[in] schematic The schematic to process.
  * @return The sum of all part numbers within the schematic.
  */
-static int32_t schematic_sum_of_part_numbers(const Schematic* schematic) {
+static i32 schematic_sum_of_part_numbers(const Schematic* schematic) {
     SCU_ASSERT(schematic != nullptr);
-    int32_t sumOfPartNumbers = 0;
-    for (int32_t y = 0; y < schematic->height; y++) {
-        for (int32_t x = 0; x < schematic->width; x++) {
+    i32 sumOfPartNumbers = 0;
+    for (isize y = 0; y < schematic->height; y++) {
+        for (isize x = 0; x < schematic->width; x++) {
             Vector position = { .x = x, .y = y };
             if (schematic_is_start_of_part_number(schematic, position)) {
-                int32_t partNumber = 0;
+                i32 partNumber = 0;
                 scu_sscanf(
                     schematic_char_at(schematic, position),
-                    "%" SCNd32,
+                    "%" I32_SCND,
                     &partNumber
                 );
                 sumOfPartNumbers += partNumber;
@@ -345,15 +346,15 @@ static int32_t schematic_sum_of_part_numbers(const Schematic* schematic) {
  * @param[in] schematic The schematic to process.
  * @return The sum of all gear ratios within the schematic.
  */
-static int32_t schematic_sum_of_gear_ratios(const Schematic* schematic) {
+static i32 schematic_sum_of_gear_ratios(const Schematic* schematic) {
     SCU_ASSERT(schematic != nullptr);
-    int32_t sumOfGearRatios = 0;
-    for (int32_t y = 0; y < schematic->height; y++) {
-        for (int32_t x = 0; x < schematic->width; x++) {
+    i32 sumOfGearRatios = 0;
+    for (isize y = 0; y < schematic->height; y++) {
+        for (isize x = 0; x < schematic->width; x++) {
             Vector position = { .x = x, .y = y };
             if (*schematic_char_at(schematic, position) == '*') {
                 Vector starts[NUMBERS_PER_GEAR] = { };
-                int32_t numbers = 0;
+                i32 numbers = 0;
                 const Vector* offset;
                 SCU_ARRAY_FOREACH(offset, OFFSETS) {
                     Vector neighbor = (Vector) {
@@ -368,7 +369,7 @@ static int32_t schematic_sum_of_gear_ratios(const Schematic* schematic) {
                     );
                     if (foundStart) {
                         bool isUnique = true;
-                        for (int32_t i = 0; i < numbers; i++) {
+                        for (i32 i = 0; i < numbers; i++) {
                             if (vector_equals(starts[i], start)) {
                                 isUnique = false;
                                 break;
@@ -387,13 +388,13 @@ static int32_t schematic_sum_of_gear_ratios(const Schematic* schematic) {
                     }
                 }
                 if (numbers == NUMBERS_PER_GEAR) {
-                    int32_t gearRatio = 1;
+                    i32 gearRatio = 1;
                     const Vector* start;
                     SCU_ARRAY_FOREACH(start, starts) {
-                        int32_t number = 0;
+                        i32 number = 0;
                         scu_sscanf(
                             schematic_char_at(schematic, *start),
-                            "%" SCNd32,
+                            "%" I32_SCND,
                             &number
                         );
                         gearRatio *= number;
@@ -408,7 +409,7 @@ static int32_t schematic_sum_of_gear_ratios(const Schematic* schematic) {
 
 int main() {
     char* buffer = nullptr;
-    int64_t size = 0;
+    isize size = 0;
     SCUError error = scu_readall(&buffer, &size);
     if (error != SCU_ERROR_NONE) {
         scu_fprintf(
@@ -427,13 +428,16 @@ int main() {
         scu_free(buffer);
         return EXIT_FAILURE;
     }
-    int32_t sumOfPartNumbers = schematic_sum_of_part_numbers(&schematic);
-    int32_t sumOfGearRatios = schematic_sum_of_gear_ratios(&schematic);
+    i32 sumOfPartNumbers = schematic_sum_of_part_numbers(&schematic);
+    i32 sumOfGearRatios = schematic_sum_of_gear_ratios(&schematic);
     scu_printf(
-        "The sum of the part numbers is %" PRId32 ".\n",
+        "The sum of the part numbers is %" I32_PRID ".\n",
         sumOfPartNumbers
     );
-    scu_printf("The sum of the gear ratios is %" PRId32 ".\n", sumOfGearRatios);
+    scu_printf(
+        "The sum of the gear ratios is %" I32_PRID ".\n",
+        sumOfGearRatios
+    );
     scu_free(schematic.grid);
     return EXIT_SUCCESS;
 }

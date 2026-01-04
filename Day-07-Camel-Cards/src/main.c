@@ -1,4 +1,5 @@
-#include <inttypes.h>
+#define SCU_SHORT_ALIASES
+
 #include <scu/alloc.h>
 #include <scu/array.h>
 #include <scu/assert.h>
@@ -7,7 +8,7 @@
 #include <scu/io.h>
 #include <scu/list.h>
 #include <scu/memory.h>
-#include <stdint.h>
+#include <scu/types.h>
 #include <stdlib.h>
 
 /** @brief Represents a card in a deck for Camel Cards. */
@@ -46,7 +47,7 @@ typedef struct Hand {
     Card cards[5];
 
     /** @brief The bid associated with the hand. */
-    int32_t bid;
+    i32 bid;
 
     /** @brief The type of the hand. */
     HandType type;
@@ -120,14 +121,14 @@ static inline bool card_parse(char c, Card* card) {
  */
 static inline void hand_classify(Hand* hand) {
     SCU_ASSERT(hand != nullptr);
-    int32_t counts[CARD_ACE + 1] = { };
+    i32 counts[CARD_ACE + 1] = { };
     Card* card;
     SCU_ARRAY_FOREACH(card, hand->cards) {
         counts[*card]++;
     }
-    int32_t highestCount = INT32_MIN;
-    int32_t secondHighestCount = INT32_MIN;
-    int32_t* count;
+    i32 highestCount = I32_MIN;
+    i32 secondHighestCount = I32_MIN;
+    i32* count;
     SCU_ARRAY_FOREACH(count, counts) {
         if (*count > highestCount) {
             secondHighestCount = highestCount;
@@ -171,7 +172,7 @@ static inline void hand_classify(Hand* hand) {
  */
 static inline void hand_classify_with_joker(Hand* hand) {
     SCU_ASSERT(hand != nullptr);
-    int32_t counts[CARD_ACE + 1] = { };
+    i32 counts[CARD_ACE + 1] = { };
     Card* card;
     SCU_ARRAY_FOREACH(card, hand->cards) {
         if (*card == CARD_JACK) {
@@ -179,9 +180,9 @@ static inline void hand_classify_with_joker(Hand* hand) {
         }
         counts[*card]++;
     }
-    int32_t highestCount = INT32_MIN;
-    int32_t secondHighestCount = INT32_MIN;
-    int32_t* count;
+    i32 highestCount = I32_MIN;
+    i32 secondHighestCount = I32_MIN;
+    i32* count;
     SCU_ARRAY_FOREACH(count, counts) {
         if (*count > highestCount) {
             secondHighestCount = highestCount;
@@ -272,7 +273,7 @@ static SCUError parse_hands(Hand** hands) {
     }
     SCUError error;
     char* line = nullptr;
-    int64_t size = 0;
+    isize size = 0;
     while ((error = scu_readln(&line, &size)) == SCU_ERROR_NONE) {
         char* temp = line;
         Hand hand;
@@ -284,7 +285,8 @@ static SCUError parse_hands(Hand** hands) {
             }
             temp++;
         }
-        if ((scu_sscanf(temp, "%" SCNd32, &hand.bid) != 1) || (hand.bid < 0)) {
+        if ((scu_sscanf(temp, "%" I32_SCND, &hand.bid) != 1)
+                || (hand.bid < 0)) {
             error = SCU_ERROR_INVALID_FORMAT;
             goto fail;
         }
@@ -319,16 +321,16 @@ static int compare_hands(const void* a, const void* b) {
     SCU_ASSERT(b != nullptr);
     const Hand* l = (const Hand*) a;
     const Hand* r = (const Hand*) b;
-    int result = (l->type > r->type) - (l->type < r->type);
-    if (result == 0) {
-        for (int32_t i = 0; i < SCU_COUNTOF(l->cards); i++) {
-            result = (l->cards[i] > r->cards[i]) - (l->cards[i] < r->cards[i]);
-            if (result != 0) {
+    int cmp = (l->type > r->type) - (l->type < r->type);
+    if (cmp == 0) {
+        for (isize i = 0; i < SCU_COUNTOF(l->cards); i++) {
+            cmp = (l->cards[i] > r->cards[i]) - (l->cards[i] < r->cards[i]);
+            if (cmp != 0) {
                 break;
             }
         }
     }
-    return result;
+    return cmp;
 }
 
 /**
@@ -340,12 +342,12 @@ static int compare_hands(const void* a, const void* b) {
  * @param[in, out] hands The list of hands.
  * @return The total winnings for the specified list of hands.
  */
-static int32_t total_winnings(Hand* hands) {
+static i32 total_winnings(Hand* hands) {
     SCU_ASSERT(hands != nullptr);
     scu_list_sort(hands, compare_hands);
-    int32_t totalWinnings = 0;
-    for (int64_t i = 0; i < scu_list_count(hands); i++) {
-        totalWinnings += hands[i].bid * ((int32_t) (i + 1));
+    i32 totalWinnings = 0;
+    for (isize i = 0; i < scu_list_count(hands); i++) {
+        totalWinnings += hands[i].bid * (i32) (i + 1);
     }
     return totalWinnings;
 }
@@ -361,16 +363,16 @@ static int32_t total_winnings(Hand* hands) {
  * @return The total winnings for the specified list of hands using the new
  * joker rule.
  */
-static int32_t total_winnings_with_joker(Hand* hands) {
+static i32 total_winnings_with_joker(Hand* hands) {
     SCU_ASSERT(hands != nullptr);
     Hand* hand;
     SCU_LIST_FOREACH(hand, hands) {
         hand_classify_with_joker(hand);
     }
     scu_list_sort(hands, compare_hands);
-    int32_t totalWinnings = 0;
-    for (int64_t i = 0; i < scu_list_count(hands); i++) {
-        totalWinnings += hands[i].bid * ((int32_t) (i + 1));
+    i32 totalWinnings = 0;
+    for (isize i = 0; i < scu_list_count(hands); i++) {
+        totalWinnings += hands[i].bid * (i32) (i + 1);
     }
     return totalWinnings;
 }
@@ -386,11 +388,11 @@ int main() {
         );
         return EXIT_FAILURE;
     }
-    int32_t totalWinnings = total_winnings(hands);
-    int32_t totalWinningsWithJoker = total_winnings_with_joker(hands);
-    scu_printf("The total winnings are %" PRId32 ".\n", totalWinnings);
+    i32 totalWinnings = total_winnings(hands);
+    i32 totalWinningsWithJoker = total_winnings_with_joker(hands);
+    scu_printf("The total winnings are %" I32_PRID ".\n", totalWinnings);
     scu_printf(
-        "Using the new joker rule, the total winnings are %" PRId32 ".\n",
+        "Using the new joker rule, the total winnings are %" I32_PRID ".\n",
         totalWinningsWithJoker
     );
     scu_list_free(hands);

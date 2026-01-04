@@ -1,11 +1,12 @@
-#include <inttypes.h>
+#define SCU_SHORT_ALIASES
+
 #include <scu/alloc.h>
 #include <scu/array.h>
 #include <scu/assert.h>
 #include <scu/common.h>
 #include <scu/io.h>
 #include <scu/string.h>
-#include <stdint.h>
+#include <scu/types.h>
 #include <stdlib.h>
 
 /** @brief Represents a digit. */
@@ -15,10 +16,10 @@ typedef struct Digit {
     const char* token;
 
     /** @brief The length of the token, e.g., 3 for the digit one. */
-    int64_t length;
+    isize length;
 
     /** @brief The value of the digit, e.g., 1 for the digit one. */
-    int32_t value;
+    i32 value;
 
 } Digit;
 
@@ -41,8 +42,8 @@ static const Digit DIGITS[] = {
  *
  * @note The numeric calibration value is formed by combining the first and last
  * numeric digit (1 to 9) found in `s`. The alphanumeric calibration value is
- * formed by combining the first and last numeric or alphanumeric digit (1 to 9
- * and "one" to "nine") found in `s`.
+ * formed by combining the first and last alphanumeric digit (1 to 9 and "one"
+ * to "nine") found in `s`.
  *
  * @warning The behavior is undefined if `s` is not a pointer to a
  * null-terminated byte string.
@@ -57,20 +58,19 @@ static const Digit DIGITS[] = {
  */
 static inline bool find_calibration_values(
     const char* restrict s,
-    int32_t* restrict calibrationValue,
-    int32_t* restrict alnumCalibrationValue
+    i32* restrict calibrationValue,
+    i32* restrict alnumCalibrationValue
 ) {
     SCU_ASSERT(s != nullptr);
     SCU_ASSERT(calibrationValue != nullptr);
     SCU_ASSERT(alnumCalibrationValue != nullptr);
-    int32_t firstDigit = -1;
-    int32_t lastDigit = -1;
-    int32_t firstAlnumDigit = -1;
-    int32_t lastAlnumDigit = -1;
-    const char* c;
-    SCU_STR_FOREACH(c, s) {
-        if ((*c >= '1') && (*c <= '9')) {
-            int32_t digit = *c - '0';
+    i32 firstDigit = -1;
+    i32 lastDigit = -1;
+    i32 firstAlnumDigit = -1;
+    i32 lastAlnumDigit = -1;
+    for (isize i = 0; s[i] != '\0'; i++) {
+        if ((s[i] >= '1') && (s[i] <= '9')) {
+            i32 digit = s[i] - '0';
             if (firstDigit == -1) {
                 firstDigit = digit;
             }
@@ -83,7 +83,7 @@ static inline bool find_calibration_values(
         else {
             const Digit* digit;
             SCU_ARRAY_FOREACH(digit, DIGITS) {
-                if (scu_strncmp(c, digit->token, digit->length) == 0) {
+                if (scu_strncmp(s + i, digit->token, digit->length) == 0) {
                     if (firstAlnumDigit == -1) {
                         firstAlnumDigit = digit->value;
                     }
@@ -106,12 +106,12 @@ static inline bool find_calibration_values(
 int main() {
     SCUError error = SCU_ERROR_NONE;
     char* line = nullptr;
-    int64_t size = 0;
-    int32_t sumOfCalibrationValues = 0;
-    int32_t sumOfAlnumCalibrationValues = 0;
+    isize size = 0;
+    i32 sumOfCalibrationValues = 0;
+    i32 sumOfAlnumCalibrationValues = 0;
     while ((error = scu_readln(&line, &size)) == SCU_ERROR_NONE) {
-        int32_t calibrationValue = -1;
-        int32_t alnumCalibrationValue = -1;
+        i32 calibrationValue = -1;
+        i32 alnumCalibrationValue = -1;
         bool foundCalibrationValues = find_calibration_values(
             line,
             &calibrationValue,
@@ -119,7 +119,7 @@ int main() {
         );
         if (!foundCalibrationValues) {
             // Replace the newline (if present) to avoid an ugly line break.
-            int64_t newlineIndex = scu_str_index_of(line, '\n');
+            isize newlineIndex = scu_str_index_of(line, '\n');
             if (newlineIndex != -1) {
                 line[newlineIndex] = '\0';
             }
@@ -144,11 +144,11 @@ int main() {
         return EXIT_FAILURE;
     }
     scu_printf(
-        "The sum of the numeric calibration values is %" PRId32 ".\n",
+        "The sum of the numeric calibration values is %" I32_PRID ".\n",
         sumOfCalibrationValues
     );
     scu_printf(
-        "The sum of the alphanumeric calibration values is %" PRId32 ".\n",
+        "The sum of the alphanumeric calibration values is %" I32_PRID ".\n",
         sumOfAlnumCalibrationValues
     );
     return EXIT_SUCCESS;

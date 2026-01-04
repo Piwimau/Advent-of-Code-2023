@@ -1,18 +1,19 @@
-#include <inttypes.h>
+#define SCU_SHORT_ALIASES
+
 #include <scu/alloc.h>
 #include <scu/assert.h>
 #include <scu/common.h>
 #include <scu/io.h>
 #include <scu/list.h>
 #include <scu/stack.h>
-#include <stdint.h>
+#include <scu/types.h>
 #include <stdlib.h>
 
 /** @brief Represents a history of environmental values. */
 typedef struct History {
 
     /** @brief The values in the history. */
-    int32_t* values;
+    i32* values;
 
 } History;
 
@@ -28,10 +29,10 @@ typedef struct Report {
 typedef struct Extrapolation {
 
     /** @brief The previous extrapolated value. */
-    int32_t prev;
+    i32 prev;
 
     /** @brief The next extrapolated value. */
-    int32_t next;
+    i32 next;
 
 } Extrapolation;
 
@@ -62,14 +63,14 @@ static SCUError history_parse(
 ) {
     SCU_ASSERT(line != nullptr);
     SCU_ASSERT(history != nullptr);
-    history->values = scu_list_new(SCU_SIZEOF(int32_t));
+    history->values = scu_list_new(SCU_SIZEOF(i32));
     if (history->values == nullptr) {
         return SCU_ERROR_OUT_OF_MEMORY;
     }
     SCUError error = SCU_ERROR_NONE;
-    int32_t value;
-    int64_t read;
-    while (scu_sscanf(line, "%" SCNd32 "%lln", &value, &read) == 1) {
+    i32 value;
+    isize read;
+    while (scu_sscanf(line, "%" I32_SCND "%" ISIZE_SCNN, &value, &read) == 1) {
         error = scu_list_add(&history->values, &value);
         if (error != SCU_ERROR_NONE) {
             goto fail;
@@ -97,7 +98,7 @@ fail:
  */
 static inline bool history_contains_non_zero(const History* history) {
     SCU_ASSERT(history != nullptr);
-    int32_t* value;
+    i32* value;
     SCU_LIST_FOREACH(value, history->values) {
         if (*value != 0) {
             return true;
@@ -122,7 +123,7 @@ static inline void history_replace_with(
     SCU_ASSERT(dest != nullptr);
     SCU_ASSERT(src != nullptr);
     scu_list_clear(dest->values);
-    int32_t* value;
+    i32* value;
     SCU_LIST_FOREACH(value, src->values) {
         scu_list_add(&dest->values, value);
     }
@@ -146,11 +147,11 @@ static inline void history_calc_differences(
 ) {
     SCU_ASSERT(dest != nullptr);
     SCU_ASSERT(src != nullptr);
-    int64_t count = scu_list_count(src->values);
+    isize count = scu_list_count(src->values);
     SCU_ASSERT(count > 1);
     scu_list_clear(dest->values);
-    for (int64_t i = 0; i < (count - 1); i++) {
-        int32_t difference = src->values[i + 1] - src->values[i];
+    for (isize i = 0; i < (count - 1); i++) {
+        i32 difference = src->values[i + 1] - src->values[i];
         scu_list_add(&dest->values, &difference);
     }
 }
@@ -163,7 +164,7 @@ static inline void history_calc_differences(
  * @param[in] history The history to retrieve the first value from.
  * @return The first value in `history`.
  */
-static inline int32_t history_first_value(const History* history) {
+static inline i32 history_first_value(const History* history) {
     SCU_ASSERT(history != nullptr);
     SCU_ASSERT(scu_list_count(history->values) > 0);
     return history->values[0];
@@ -177,9 +178,9 @@ static inline int32_t history_first_value(const History* history) {
  * @param[in] history The history to retrieve the last value from.
  * @return The last value in `history`.
  */
-static inline int32_t history_last_value(const History* history) {
+static inline i32 history_last_value(const History* history) {
     SCU_ASSERT(history != nullptr);
-    int64_t count = scu_list_count(history->values);
+    isize count = scu_list_count(history->values);
     SCU_ASSERT(count > 0);
     return history->values[count - 1];
 }
@@ -266,7 +267,7 @@ static SCUError report_parse(Report* report) {
         return SCU_ERROR_OUT_OF_MEMORY;
     }
     char* line = nullptr;
-    int64_t size = 0;
+    isize size = 0;
     SCUError error;
     while ((error = scu_readln(&line, &size)) == SCU_ERROR_NONE) {
         History history;
@@ -301,11 +302,11 @@ fail:
  */
 static Extrapolation report_extrapolate(const Report* report) {
     SCU_ASSERT(report != nullptr);
-    History oldHistory = { .values = scu_list_new(SCU_SIZEOF(int32_t)) };
+    History oldHistory = { .values = scu_list_new(SCU_SIZEOF(i32)) };
     if (oldHistory.values == nullptr) {
         goto oldHistoryAllocFail;
     }
-    History newHistory = { .values = scu_list_new(SCU_SIZEOF(int32_t)) };
+    History newHistory = { .values = scu_list_new(SCU_SIZEOF(i32)) };
     if (newHistory.values == nullptr) {
         goto newHistoryAllocFail;
     }
@@ -326,8 +327,8 @@ static Extrapolation report_extrapolate(const Report* report) {
             history_calc_differences(&newHistory, &oldHistory);
             history_swap(&oldHistory, &newHistory);
         }
-        int32_t prev = 0;
-        int32_t next = 0;
+        i32 prev = 0;
+        i32 next = 0;
         Extrapolation extrapolation;
         while (scu_stack_try_pop(extrapolations, &extrapolation)) {
             prev = extrapolation.prev - prev;
@@ -361,11 +362,11 @@ int main() {
     }
     Extrapolation extrapolation = report_extrapolate(&report);
     scu_printf(
-        "The sum of the next values is %" PRId32 ".\n",
+        "The sum of the next values is %" I32_PRID ".\n",
         extrapolation.next
     );
     scu_printf(
-        "The sum of the previous values is %" PRId32 ".\n",
+        "The sum of the previous values is %" I32_PRID ".\n",
         extrapolation.prev
     );
     report_free(&report);

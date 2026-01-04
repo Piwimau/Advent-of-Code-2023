@@ -1,4 +1,5 @@
-#include <inttypes.h>
+#define SCU_SHORT_ALIASES
+
 #include <scu/alloc.h>
 #include <scu/array.h>
 #include <scu/assert.h>
@@ -8,7 +9,7 @@
 #include <scu/math.h>
 #include <scu/stack.h>
 #include <scu/string.h>
-#include <stdint.h>
+#include <scu/types.h>
 #include <stdlib.h>
 
 /**
@@ -18,13 +19,13 @@
 typedef struct Mapping {
 
     /** @brief The first value of the destination range. */
-    int64_t dest;
+    i64 dest;
 
     /** @brief The first value of the source range. */
-    int64_t src;
+    i64 src;
 
     /** @brief The length of the range. */
-    int64_t length;
+    i64 length;
 
 } Mapping;
 
@@ -57,7 +58,7 @@ static const char* const MAP_HEADERS[] = {
 typedef struct Almanac {
 
     /** @brief The list of seeds. */
-    int64_t* seeds;
+    i64* seeds;
 
     /** @brief The maps in the almanac. */
     Map maps[SCU_COUNTOF(MAP_HEADERS)];
@@ -68,10 +69,10 @@ typedef struct Almanac {
 typedef struct Range {
 
     /** @brief The first value of the seed range. */
-    int64_t src;
+    i64 src;
 
     /** @brief The length of the seed range. */
-    int64_t length;
+    i64 length;
 
 } Range;
 
@@ -143,7 +144,7 @@ static SCUError almanac_parse(Almanac* almanac) {
     *almanac = (Almanac) { };
     SCUError error;
     char* line = nullptr;
-    int64_t size = 0;
+    isize size = 0;
     Map* currentMap = nullptr;
     while ((error = scu_readln(&line, &size)) == SCU_ERROR_NONE) {
         if ((line[0] >= '0') && (line[0] <= '9')) {
@@ -152,9 +153,9 @@ static SCUError almanac_parse(Almanac* almanac) {
                 goto fail;
             }
             Mapping mapping;
-            int64_t read = scu_sscanf(
+            isize read = scu_sscanf(
                 line,
-                "%" SCNd64 " %" SCNd64 " %" SCNd64 "\n",
+                "%" I64_SCND " %" I64_SCND " %" I64_SCND "\n",
                 &mapping.dest,
                 &mapping.src,
                 &mapping.length
@@ -179,16 +180,16 @@ static SCUError almanac_parse(Almanac* almanac) {
                 error = SCU_ERROR_INVALID_FORMAT;
                 goto fail;
             }
-            almanac->seeds = scu_list_new(sizeof(int64_t));
+            almanac->seeds = scu_list_new(sizeof(i64));
             if (almanac->seeds == nullptr) {
                 error = SCU_ERROR_OUT_OF_MEMORY;
                 goto fail;
             }
             const char* temp = line;
             temp += scu_strlen("seeds: ");
-            int64_t seed;
-            int64_t read;
-            while (scu_sscanf(temp, "%" SCNd64 "%lln", &seed, &read) == 1) {
+            i64 seed;
+            isize read;
+            while (scu_sscanf(temp, "%" I64_SCND "%" ISIZE_SCNN, &seed, &read) == 1) {
                 error = scu_list_add(&almanac->seeds, &seed);
                 if (error != SCU_ERROR_NONE) {
                     goto fail;
@@ -198,7 +199,7 @@ static SCUError almanac_parse(Almanac* almanac) {
         }
         else {
             bool matchedMap = false;
-            for (int32_t i = 0; i < SCU_COUNTOF(MAP_HEADERS); i++) {
+            for (isize i = 0; i < SCU_COUNTOF(MAP_HEADERS); i++) {
                 if (scu_strcmp(line, MAP_HEADERS[i]) == 0) {
                     matchedMap = true;
                     // There must be only one of each map, so check if we
@@ -256,13 +257,13 @@ fail:
  * @param[in] almanac The almanac containing the seeds and maps.
  * @return The lowest location of any single seed in the specified almanac.
  */
-static int64_t almanac_lowest_location_single(const Almanac* almanac) {
+static i64 almanac_lowest_location_single(const Almanac* almanac) {
     SCU_ASSERT(almanac != nullptr);
     SCU_ASSERT(scu_list_count(almanac->seeds) > 0);
-    int64_t lowestLocation = INT64_MAX;
-    const int64_t* seed;
+    i64 lowestLocation = I64_MAX;
+    const i64* seed;
     SCU_LIST_FOREACH(seed, almanac->seeds) {
-        int64_t dest = *seed;
+        i64 dest = *seed;
         const Map* map;
         SCU_ARRAY_FOREACH(map, almanac->maps) {
             const Mapping* mapping;
@@ -289,14 +290,14 @@ static int64_t almanac_lowest_location_single(const Almanac* almanac) {
  * @param[in] almanac The almanac containing the seed ranges and maps.
  * @return The lowest location of any seed range in the specified almanac.
  */
-static int64_t almanac_lowest_location_ranges(const Almanac* almanac) {
+static i64 almanac_lowest_location_ranges(const Almanac* almanac) {
     SCU_ASSERT(almanac != nullptr);
-    int64_t count = scu_list_count(almanac->seeds);
+    isize count = scu_list_count(almanac->seeds);
     SCU_ASSERT((count > 0) && ((count % 2) == 0));
-    int64_t lowestLocation = INT64_MAX;
+    i64 lowestLocation = I64_MAX;
     SCUStack* oldRanges = scu_stack_new(SCU_SIZEOF(Range));
     SCUStack* newRanges = scu_stack_new(SCU_SIZEOF(Range));
-    for (int64_t i = 0; i < count; i += 2) {
+    for (isize i = 0; i < count; i += 2) {
         scu_stack_clear(oldRanges);
         Range oldRange = {
             .src = almanac->seeds[i],
@@ -307,13 +308,13 @@ static int64_t almanac_lowest_location_ranges(const Almanac* almanac) {
         SCU_ARRAY_FOREACH(map, almanac->maps) {
             scu_stack_clear(newRanges);
             while (scu_stack_try_pop(oldRanges, &oldRange)) {
-                int64_t oldStart = oldRange.src;
-                int64_t oldEnd = oldRange.src + oldRange.length - 1;
+                i64 oldStart = oldRange.src;
+                i64 oldEnd = oldRange.src + oldRange.length - 1;
                 bool matchedRange = false;
                 const Mapping* mapping;
                 SCU_LIST_FOREACH(mapping, map->mappings) {
-                    int64_t overlapStart = SCU_MAX(oldStart, mapping->src);
-                    int64_t overlapEnd = SCU_MIN(
+                    i64 overlapStart = SCU_MAX(oldStart, mapping->src);
+                    i64 overlapEnd = SCU_MIN(
                         oldEnd,
                         mapping->src + mapping->length - 1
                     );
@@ -370,14 +371,14 @@ int main() {
         );
         return EXIT_FAILURE;
     }
-    int64_t lowestLocationSingle = almanac_lowest_location_single(&almanac);
-    int64_t lowestLocationRanges = almanac_lowest_location_ranges(&almanac);
+    i64 lowestLocationSingle = almanac_lowest_location_single(&almanac);
+    i64 lowestLocationRanges = almanac_lowest_location_ranges(&almanac);
     scu_printf(
-        "The lowest location of any single seed is %" PRId64 ".\n",
+        "The lowest location of any single seed is %" I64_PRID ".\n",
         lowestLocationSingle
     );
     scu_printf(
-        "The lowest location of the seed ranges is %" PRId64 ".\n",
+        "The lowest location of the seed ranges is %" I64_PRID ".\n",
         lowestLocationRanges
     );
     almanac_free(&almanac);
