@@ -3,10 +3,10 @@
 #include <scu/alloc.h>
 #include <scu/array.h>
 #include <scu/assert.h>
-#include <scu/common.h>
 #include <scu/hash-set.h>
 #include <scu/io.h>
 #include <scu/list.h>
+#include <scu/memory.h>
 #include <scu/string.h>
 #include <scu/types.h>
 #include <stdlib.h>
@@ -203,7 +203,7 @@ static usize hash_position(const void* value) {
  *
  * @param[in] a The first position.
  * @param[in] b The second position.
- * @return `true` if `*a*` and `*b*` are equal, otherwise `false`.
+ * @return `true` if `*a` and `*b` are equal, otherwise `false`.
  */
 static bool equal_position(const void* a, const void* b) {
     SCU_ASSERT(a != nullptr);

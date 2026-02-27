@@ -3,10 +3,10 @@
 #include <scu/alloc.h>
 #include <scu/array.h>
 #include <scu/assert.h>
-#include <scu/common.h>
 #include <scu/io.h>
 #include <scu/list.h>
 #include <scu/math.h>
+#include <scu/memory.h>
 #include <scu/stack.h>
 #include <scu/string.h>
 #include <scu/types.h>
@@ -180,7 +180,7 @@ static SCUError almanac_parse(Almanac* almanac) {
                 error = SCU_ERROR_INVALID_FORMAT;
                 goto fail;
             }
-            almanac->seeds = scu_list_new(sizeof(i64));
+            almanac->seeds = scu_list_new(SCU_SIZEOF(i64));
             if (almanac->seeds == nullptr) {
                 error = SCU_ERROR_OUT_OF_MEMORY;
                 goto fail;
@@ -208,7 +208,9 @@ static SCUError almanac_parse(Almanac* almanac) {
                         error = SCU_ERROR_INVALID_FORMAT;
                         goto fail;
                     }
-                    almanac->maps[i].mappings = scu_list_new(sizeof(Mapping));
+                    almanac->maps[i].mappings = scu_list_new(
+                        SCU_SIZEOF(Mapping)
+                    );
                     if (almanac->maps[i].mappings == nullptr) {
                         error = SCU_ERROR_OUT_OF_MEMORY;
                         goto fail;

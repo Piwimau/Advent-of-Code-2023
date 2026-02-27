@@ -357,7 +357,7 @@ static i32 schematic_sum_of_gear_ratios(const Schematic* schematic) {
                 i32 numbers = 0;
                 const Vector* offset;
                 SCU_ARRAY_FOREACH(offset, OFFSETS) {
-                    Vector neighbor = (Vector) {
+                    Vector neighbor = {
                         .x = position.x + offset->x,
                         .y = position.y + offset->y
                     };
