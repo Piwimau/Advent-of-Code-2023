@@ -177,7 +177,8 @@ similar in general.
 | Day 8 – Haunted Wasteland               | 2.239 ms |  2.654 ms | 2.368 ms | 2.360 ms |           0.124 ms |
 | Day 9 – Mirage Maintenance              | 0.665 ms |  0.934 ms | 0.757 ms | 0.756 ms |           0.090 ms |
 | Day 10 – Pipe Maze                      | 1.860 ms |  2.239 ms | 2.009 ms | 1.994 ms |           0.114 ms |
-| Total                                   | 7.777 ms | 10.708 ms | 8.878 ms | 8.732 ms |           0.899 ms |
+| Day 11 – Cosmic Expansion               | 0.567 ms |  0.799 ms | 0.650 ms | 0.628 ms |           0.075 ms |
+| Total                                   | 8.344 ms | 11.507 ms | 9.528 ms | 9.360 ms |           0.974 ms |
 
 > [!NOTE]
 > The timings shown above represent actual computation times, not total process
