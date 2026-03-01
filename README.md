@@ -165,20 +165,21 @@ optimizations. The reported times are the result of ten runs and represent the
 printing the puzzle results. CPU times were usually slightly lower, but quite
 similar in general.
 
-| Day                                     |      Min |       Max |     Mean |   Median | Standard Deviation |
-|-----------------------------------------|---------:|----------:|---------:|---------:|-------------------:|
-| Day 1 – Trebuchet                       | 0.671 ms |  0.923 ms | 0.795 ms | 0.798 ms |           0.068 ms |
-| Day 2 – Cube Conundrum                  | 0.204 ms |  0.555 ms | 0.363 ms | 0.356 ms |           0.094 ms |
-| Day 3 – Gear Ratios                     | 0.577 ms |  0.698 ms | 0.629 ms | 0.611 ms |           0.047 ms |
-| Day 4 – Scratchcards                    | 0.835 ms |  1.248 ms | 0.950 ms | 0.888 ms |           0.130 ms |
-| Day 5 – If You Give A Seed A Fertilizer | 0.168 ms |  0.527 ms | 0.290 ms | 0.271 ms |           0.109 ms |
-| Day 6 – Wait For It                     | 0.090 ms |  0.237 ms | 0.182 ms | 0.190 ms |           0.051 ms |
-| Day 7 – Camel Cards                     | 0.468 ms |  0.693 ms | 0.535 ms | 0.508 ms |           0.072 ms |
-| Day 8 – Haunted Wasteland               | 2.239 ms |  2.654 ms | 2.368 ms | 2.360 ms |           0.124 ms |
-| Day 9 – Mirage Maintenance              | 0.665 ms |  0.934 ms | 0.757 ms | 0.756 ms |           0.090 ms |
-| Day 10 – Pipe Maze                      | 1.860 ms |  2.239 ms | 2.009 ms | 1.994 ms |           0.114 ms |
-| Day 11 – Cosmic Expansion               | 0.567 ms |  0.799 ms | 0.650 ms | 0.628 ms |           0.075 ms |
-| Total                                   | 8.344 ms | 11.507 ms | 9.528 ms | 9.360 ms |           0.974 ms |
+| Day                                     |        Min |        Max |       Mean |     Median | Standard Deviation |
+|-----------------------------------------|-----------:|-----------:|-----------:|-----------:|-------------------:|
+| Day 1 – Trebuchet                       |   0.671 ms |   0.923 ms |   0.795 ms |   0.798 ms |           0.068 ms |
+| Day 2 – Cube Conundrum                  |   0.204 ms |   0.555 ms |   0.363 ms |   0.356 ms |           0.094 ms |
+| Day 3 – Gear Ratios                     |   0.577 ms |   0.698 ms |   0.629 ms |   0.611 ms |           0.047 ms |
+| Day 4 – Scratchcards                    |   0.835 ms |   1.248 ms |   0.950 ms |   0.888 ms |           0.130 ms |
+| Day 5 – If You Give A Seed A Fertilizer |   0.168 ms |   0.527 ms |   0.290 ms |   0.271 ms |           0.109 ms |
+| Day 6 – Wait For It                     |   0.090 ms |   0.237 ms |   0.182 ms |   0.190 ms |           0.051 ms |
+| Day 7 – Camel Cards                     |   0.468 ms |   0.693 ms |   0.535 ms |   0.508 ms |           0.072 ms |
+| Day 8 – Haunted Wasteland               |   2.239 ms |   2.654 ms |   2.368 ms |   2.360 ms |           0.124 ms |
+| Day 9 – Mirage Maintenance              |   0.665 ms |   0.934 ms |   0.757 ms |   0.756 ms |           0.090 ms |
+| Day 10 – Pipe Maze                      |   1.860 ms |   2.239 ms |   2.009 ms |   1.994 ms |           0.114 ms |
+| Day 11 – Cosmic Expansion               |   0.567 ms |   0.799 ms |   0.650 ms |   0.628 ms |           0.075 ms |
+| Day 12 – Hot Springs                    | 234.053 ms | 242.009 ms | 236.478 ms | 235.682 ms |           2.519 ms |
+| Total                                   | 242.397 ms | 253.516 ms | 246.006 ms | 245.042 ms |           3.493 ms |
 
 > [!NOTE]
 > The timings shown above represent actual computation times, not total process
