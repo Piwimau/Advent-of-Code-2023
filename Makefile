@@ -5,7 +5,7 @@ CFLAGS = -std=c23 -Wall -Wextra -Wpedantic -Wundef -Wshadow -Wconversion \
 	-Wmissing-prototypes -Wduplicated-cond -Wduplicated-branches
 CPPFLAGS = ${INCS} ${DEPFLAGS}
 DEPFLAGS = -MMD -MP
-LDFLAGS = -Llib
+LDFLAGS = -L${LIB}
 LDLIBS = -lscu${LIB_SUFFIX}
 
 CONFIG ?= debug
@@ -34,10 +34,11 @@ else
 	Q = @
 endif
 
+LIB = lib
 SRC = ${DAYDIR}/src
 BUILD = ${DAYDIR}/build
 
-INCS = -Iinclude $(if $(wildcard ${DAYDIR}/include), -I${DAYDIR}/include)
+INCS = -I${LIB}/include $(if $(wildcard ${DAYDIR}/include), -I${DAYDIR}/include)
 SRCS = ${shell find ${SRC} -type f -name '*.c'}
 OBJS = ${patsubst ${SRC}/%.c, ${BUILD}/${CONFIG}/%.o, ${SRCS}}
 DEPS = ${patsubst ${SRC}/%.c, ${BUILD}/${CONFIG}/%.d, ${SRCS}}

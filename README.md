@@ -99,8 +99,8 @@ If you want to try out one of my solutions, simply follow these steps below:
    systems, compilers, flags, build systems and directory structures, I won't go
    into much detail here. My projects usually have few dependencies, so I often
    place the headers and compiled binaries (usually statically linked libraries)
-   in directories like `include` and `lib` within the project directory. See the
-   [Makefile](Makefile) for more information on how I set up my build
+   in directories like `lib` and `lib/include` within the project directory. See
+   the [Makefile](Makefile) for more information on how I set up my build
    infrastructure.
 
 4. Once you have downloaded the source code and installed `SCU` in an
