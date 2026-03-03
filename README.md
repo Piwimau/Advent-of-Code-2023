@@ -180,7 +180,8 @@ similar in general.
 | Day 11 – Cosmic Expansion               |   0.567 ms |   0.799 ms |   0.650 ms |   0.628 ms |           0.075 ms |
 | Day 12 – Hot Springs                    | 234.053 ms | 242.009 ms | 236.478 ms | 235.682 ms |           2.519 ms |
 | Day 13 – Point of Incidence             |   0.395 ms |   0.775 ms |   0.573 ms |   0.588 ms |           0.119 ms |
-| Total                                   | 242.792 ms | 254.291 ms | 246.579 ms | 245.630 ms |           3.612 ms |
+| Day 14 – Parabolic Reflector Dish       |  28.712 ms |  29.258 ms |  28.990 ms |  28.978 ms |           0.148 ms |
+| Total                                   | 271.504 ms | 283.549 ms | 275.569 ms | 274.608 ms |           3.760 ms |
 
 > [!NOTE]
 > The timings shown above represent actual computation times, not total process
