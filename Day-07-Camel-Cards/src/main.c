@@ -318,8 +318,8 @@ fail:
 static int compare_hands(const void* a, const void* b) {
     SCU_ASSERT(a != nullptr);
     SCU_ASSERT(b != nullptr);
-    const Hand* l = (const Hand*) a;
-    const Hand* r = (const Hand*) b;
+    const Hand* l = a;
+    const Hand* r = b;
     int cmp = (l->type > r->type) - (l->type < r->type);
     if (cmp == 0) {
         for (isize i = 0; i < SCU_COUNTOF(l->cards); i++) {

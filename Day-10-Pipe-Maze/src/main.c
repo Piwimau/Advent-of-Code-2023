@@ -188,7 +188,7 @@ static Position position_neighbor(Position position, Direction direction) {
  */
 static usize hash_position(const void* value) {
     SCU_ASSERT(value != nullptr);
-    const Position* position = (const Position*) value;
+    const Position* position = value;
     usize hash = 0;
     hash = scu_hash_combine(hash, scu_hash_isize(&position->x));
     hash = scu_hash_combine(hash, scu_hash_isize(&position->y));
@@ -208,8 +208,8 @@ static usize hash_position(const void* value) {
 static bool equal_position(const void* a, const void* b) {
     SCU_ASSERT(a != nullptr);
     SCU_ASSERT(b != nullptr);
-    const Position* l = (const Position*) a;
-    const Position* r = (const Position*) b;
+    const Position* l = a;
+    const Position* r = b;
     return (l->x == r->x) && (l->y == r->y);
 }
 

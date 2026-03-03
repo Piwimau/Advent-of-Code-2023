@@ -85,8 +85,8 @@ static bool equal_node_name(const void* a, const void* b) {
 static bool equal_node(const void* a, const void* b) {
     SCU_ASSERT(a != nullptr);
     SCU_ASSERT(b != nullptr);
-    const Node* l = (const Node*) a;
-    const Node* r = (const Node*) b;
+    const Node* l = a;
+    const Node* r = b;
     return (scu_strncmp(l->name, r->name, SCU_SIZEOF(NodeName)) == 0)
         && (scu_strncmp(l->left, r->left, SCU_SIZEOF(NodeName)) == 0)
         && (scu_strncmp(l->right, r->right, SCU_SIZEOF(NodeName)) == 0);

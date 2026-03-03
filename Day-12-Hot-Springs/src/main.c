@@ -395,7 +395,7 @@ fail:
  */
 static usize state_hash(const void* value) {
     SCU_ASSERT(value != nullptr);
-    const State* state = (const State*) value;
+    const State* state = value;
     usize hash = 0;
     hash = scu_hash_combine(hash, scu_hash_isize(&state->conditionIndex));
     hash = scu_hash_combine(hash, scu_hash_isize(&state->groupSizeIndex));
@@ -415,8 +415,8 @@ static usize state_hash(const void* value) {
 static bool state_equal(const void* a, const void* b) {
     SCU_ASSERT(a != nullptr);
     SCU_ASSERT(b != nullptr);
-    const State* l = (const State*) a;
-    const State* r = (const State*) b;
+    const State* l = a;
+    const State* r = b;
     return (l->conditionIndex == r->conditionIndex)
         && (l->groupSizeIndex == r->groupSizeIndex)
         && (l->currentGroupSize == r->currentGroupSize);
