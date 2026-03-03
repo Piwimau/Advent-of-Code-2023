@@ -179,7 +179,8 @@ similar in general.
 | Day 10 – Pipe Maze                      |   1.860 ms |   2.239 ms |   2.009 ms |   1.994 ms |           0.114 ms |
 | Day 11 – Cosmic Expansion               |   0.567 ms |   0.799 ms |   0.650 ms |   0.628 ms |           0.075 ms |
 | Day 12 – Hot Springs                    | 234.053 ms | 242.009 ms | 236.478 ms | 235.682 ms |           2.519 ms |
-| Total                                   | 242.397 ms | 253.516 ms | 246.006 ms | 245.042 ms |           3.493 ms |
+| Day 13 – Point of Incidence             |   0.395 ms |   0.775 ms |   0.573 ms |   0.588 ms |           0.119 ms |
+| Total                                   | 242.792 ms | 254.291 ms | 246.579 ms | 245.630 ms |           3.612 ms |
 
 > [!NOTE]
 > The timings shown above represent actual computation times, not total process

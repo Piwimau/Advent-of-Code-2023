@@ -60,6 +60,7 @@ static constexpr int32_t UNFOLD_COPIES = 5;
  * @return `true` if a condition was successfully parsed, otherwise `false`.
  */
 static inline bool condition_parse(char c, Condition* condition) {
+    SCU_ASSERT(condition != nullptr);
     switch (c) {
         case '?':
             *condition = CONDITION_UNKNOWN;
