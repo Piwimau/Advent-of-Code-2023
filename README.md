@@ -181,7 +181,8 @@ similar in general.
 | Day 12 – Hot Springs                    | 234.053 ms | 242.009 ms | 236.478 ms | 235.682 ms |           2.519 ms |
 | Day 13 – Point of Incidence             |   0.395 ms |   0.775 ms |   0.573 ms |   0.588 ms |           0.119 ms |
 | Day 14 – Parabolic Reflector Dish       |  28.712 ms |  29.258 ms |  28.990 ms |  28.978 ms |           0.148 ms |
-| Total                                   | 271.504 ms | 283.549 ms | 275.569 ms | 274.608 ms |           3.760 ms |
+| Day 15 – Lens Library                   |   1.004 ms |   1.440 ms |   1.130 ms |   1.103 ms |           0.128 ms |
+| Total                                   | 272.508 ms | 284.989 ms | 276.699 ms | 275.711 ms |           3.888 ms |
 
 > [!NOTE]
 > The timings shown above represent actual computation times, not total process

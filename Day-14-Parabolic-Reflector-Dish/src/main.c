@@ -374,7 +374,7 @@ static bool platform_equal(const void* a, const void* b) {
  * @param[in, out] platform The platform to simulate.
  * @param[in]      cycles   The number of cycles to simulate.
  * @return The total load on the north support beams after the specified number
- * of cycles.
+ * of cycles, or `-1` if an error occurred.
  */
 static isize platform_load_after(Platform* platform, isize cycles) {
     SCU_ASSERT(platform != nullptr);
