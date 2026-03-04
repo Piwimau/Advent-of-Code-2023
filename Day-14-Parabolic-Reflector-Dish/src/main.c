@@ -331,6 +331,7 @@ static inline isize platform_load(const Platform* platform) {
  * @return A hash for the specified platform.
  */
 static usize platform_hash(const void* value) {
+    SCU_ASSERT(value != nullptr);
     const Platform* platform = value;
     usize hash = 0;
     hash = scu_hash_combine(hash, scu_hash_isize(&platform->width));
@@ -356,6 +357,8 @@ static usize platform_hash(const void* value) {
  * @return `true` if the specified platforms are equal, otherwise `false`.
  */
 static bool platform_equal(const void* a, const void* b) {
+    SCU_ASSERT(a != nullptr);
+    SCU_ASSERT(b != nullptr);
     const Platform* l = a;
     const Platform* r = b;
     return (l->width == r->width) && (l->height == r->height)

@@ -443,7 +443,7 @@ static GridAnalysis grid_analyze(const Grid* grid) {
     Position current = position_neighbor(grid->start, prev);
     GridAnalysis analysis = { .farthestDistance = 1 };
     SCUError error;
-    while ((error = scu_hash_set_add(loop, &current)) == SCU_ERROR_NONE) {
+    while ((error = scu_hash_set_try_add(loop, &current)) == SCU_ERROR_NONE) {
         const Tile* tile = grid_tile_at(grid, current);
         Direction next = *tile ^ direction_opposite(prev);
         current = position_neighbor(current, next);

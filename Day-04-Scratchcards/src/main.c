@@ -53,7 +53,7 @@ static bool card_parse(const char* restrict line, Card* restrict card) {
         scu_equal_i32
     );
     while (scu_sscanf(line, "%" I32_SCND "%" ISIZE_SCNN, &number, &read) == 1) {
-        scu_hash_set_add(winningNumbers, &number);
+        scu_hash_set_try_add(winningNumbers, &number);
         line += read;
     }
     if (scu_sscanf(line, " | %" ISIZE_SCNN, &read) != 0) {
