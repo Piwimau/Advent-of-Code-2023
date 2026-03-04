@@ -183,7 +183,8 @@ similar in general.
 | Day 14 – Parabolic Reflector Dish       |  28.712 ms |  29.258 ms |  28.990 ms |  28.978 ms |           0.148 ms |
 | Day 15 – Lens Library                   |   1.004 ms |   1.440 ms |   1.130 ms |   1.103 ms |           0.128 ms |
 | Day 16 – The Floor Will Be Lava         |  33.441 ms |  35.787 ms |  34.694 ms |  34.822 ms |           0.790 ms |
-| Total                                   | 305.949 ms | 320.776 ms | 311.393 ms | 310.533 ms |           4.678 ms |
+| Day 17 – Clumsy Crucible                | 278.827 ms | 296.070 ms | 286.835 ms | 286.840 ms |           6.047 ms |
+| Total                                   | 584.776 ms | 616.846 ms | 598.228 ms | 597.373 ms |          10.725 ms |
 
 > [!NOTE]
 > The timings shown above represent actual computation times, not total process
