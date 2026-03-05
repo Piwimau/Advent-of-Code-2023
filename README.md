@@ -184,7 +184,8 @@ similar in general.
 | Day 15 – Lens Library                   |   1.004 ms |   1.440 ms |   1.130 ms |   1.103 ms |           0.128 ms |
 | Day 16 – The Floor Will Be Lava         |  33.441 ms |  35.787 ms |  34.694 ms |  34.822 ms |           0.790 ms |
 | Day 17 – Clumsy Crucible                | 278.827 ms | 296.070 ms | 286.835 ms | 286.840 ms |           6.047 ms |
-| Total                                   | 584.776 ms | 616.846 ms | 598.228 ms | 597.373 ms |          10.725 ms |
+| Day 18 – Lavaduct Lagoon                |   0.328 ms |   0.530 ms |   0.392 ms |   0.353 ms |           0.067 ms |
+| Total                                   | 585.104 ms | 617.376 ms | 598.620 ms | 597.726 ms |          10.792 ms |
 
 > [!NOTE]
 > The timings shown above represent actual computation times, not total process
