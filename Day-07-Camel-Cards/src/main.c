@@ -284,8 +284,9 @@ static SCUError parse_hands(Hand** hands) {
             }
             temp++;
         }
-        if ((scu_sscanf(temp, "%" I32_SCND, &hand.bid) != 1)
-                || (hand.bid < 0)) {
+        if (
+            (scu_sscanf(temp, "%" I32_SCND, &hand.bid) != 1) || (hand.bid < 0)
+        ) {
             error = SCU_ERROR_INVALID_FORMAT;
             goto fail;
         }

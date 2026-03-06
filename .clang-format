@@ -13,7 +13,10 @@ AlignConsecutiveShortCaseStatements:
     AlignCaseColons: false
 AlignEscapedNewlines: LeftWithLastLine
 AlignOperands: DontAlign
-AlignTrailingComments: false
+AlignTrailingComments:
+    Kind: Leave
+    OverEmptyLines: 0
+    AlignPPAndNotPP: false
 AllowAllArgumentsOnNextLine: false
 AllowAllParametersOfDeclarationOnNextLine: false
 AllowBreakBeforeNoexceptSpecifier: Always
@@ -53,9 +56,19 @@ BraceWrapping:
 BracedInitializerIndentWidth: 4
 BreakAdjacentStringLiterals: false
 BreakAfterAttributes: Leave
+BreakAfterOpenBracketBracedList: true
+BreakAfterOpenBracketFunction: true
+BreakAfterOpenBracketIf: true
+BreakAfterOpenBracketLoop: true
+BreakAfterOpenBracketSwitch: true
 BreakAfterReturnType: Automatic
 BreakBeforeBinaryOperators: NonAssignment
 BreakBeforeBraces: Custom
+BreakBeforeCloseBracketBracedList: true
+BreakBeforeCloseBracketFunction: true
+BreakBeforeCloseBracketIf: true
+BreakBeforeCloseBracketLoop: true
+BreakBeforeCloseBracketSwitch: true
 BreakBeforeConceptDeclarations: Always
 BreakBeforeInlineASMColon: OnlyMultiline
 BreakBeforeTemplateCloser: true
@@ -108,6 +121,11 @@ LambdaBodyIndentation: Signature
 LineEnding: DeriveCRLF
 MainIncludeChar: Any
 NamespaceIndentation: All
+NumericLiteralCase:
+    ExponentLetter: Upper
+    HexDigit: Upper
+    Prefix: Lower
+    Suffix: Upper
 PPIndentWidth: 4
 PackConstructorInitializers: CurrentLine
 PenaltyBreakAssignment: 1000

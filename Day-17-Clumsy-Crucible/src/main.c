@@ -330,8 +330,9 @@ static isize grid_min_heat_loss(
         Position position = state.position;
         Direction direction = state.direction;
         isize straightMoves = state.straightMoves;
-        if (grid_is_dest(grid, position)
-                && (straightMoves >= minStraightMoves)) {
+        if (
+            grid_is_dest(grid, position) && (straightMoves >= minStraightMoves)
+        ) {
             minLoss = loss;
             break;
         }

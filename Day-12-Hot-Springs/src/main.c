@@ -205,12 +205,16 @@ static inline i64 record_count_possible_arrangements(
     isize conditionCount = scu_list_count(conditions);
     isize groupSizeCount = scu_list_count(groupSizes);
     if (state.conditionIndex == conditionCount) {
-        if ((state.groupSizeIndex == groupSizeCount)
-                && (state.currentGroupSize == 0)) {
+        if (
+            (state.groupSizeIndex == groupSizeCount)
+                && (state.currentGroupSize == 0)
+        ) {
             return 1;
         }
-        if ((state.groupSizeIndex == (groupSizeCount - 1))
-                && (state.currentGroupSize == groupSizes[state.groupSizeIndex])) {
+        if (
+            (state.groupSizeIndex == (groupSizeCount - 1))
+                && (state.currentGroupSize == groupSizes[state.groupSizeIndex])
+        ) {
             return 1;
         }
         return 0;
@@ -221,8 +225,9 @@ static inline i64 record_count_possible_arrangements(
     }
     Condition condition = conditions[state.conditionIndex];
     i64 arrangements = 0;
-    if ((condition == CONDITION_OPERATIONAL)
-            || (condition == CONDITION_UNKNOWN)) {
+    if (
+        (condition == CONDITION_OPERATIONAL) || (condition == CONDITION_UNKNOWN)
+    ) {
         if (state.currentGroupSize == 0) {
             arrangements += record_count_possible_arrangements(
                 record,
@@ -234,8 +239,10 @@ static inline i64 record_count_possible_arrangements(
                 cache
             );
         }
-        else if ((state.groupSizeIndex < groupSizeCount)
-                && (state.currentGroupSize == groupSizes[state.groupSizeIndex])) {
+        else if (
+            (state.groupSizeIndex < groupSizeCount)
+                && (state.currentGroupSize == groupSizes[state.groupSizeIndex])
+        ) {
             arrangements += record_count_possible_arrangements(
                 record,
                 (State) {
@@ -247,8 +254,9 @@ static inline i64 record_count_possible_arrangements(
             );
         }
     }
-    if ((condition == CONDITION_DAMAGED)
-            || (condition == CONDITION_UNKNOWN)) {
+    if (
+        (condition == CONDITION_DAMAGED) || (condition == CONDITION_UNKNOWN)
+    ) {
         arrangements += record_count_possible_arrangements(
             record,
             (State) {

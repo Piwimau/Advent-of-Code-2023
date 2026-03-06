@@ -99,8 +99,11 @@ static inline SCUError step_parse(
         endIndex = scu_strlen(*line);
     }
     isize operationIndex = scu_str_index_of_any(*line, "=-");
-    if ((operationIndex == -1) || ((operationIndex != (endIndex - 2))
-            && (operationIndex != (endIndex - 1)))) {
+    if (
+        (operationIndex == -1)
+            || ((operationIndex != (endIndex - 2))
+                && (operationIndex != (endIndex - 1)))
+    ) {
         return SCU_ERROR_INVALID_FORMAT;
     }
     step->label = scu_strndup(*line, operationIndex);

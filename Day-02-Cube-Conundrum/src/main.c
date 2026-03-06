@@ -101,8 +101,10 @@ static inline bool game_parse(const char* restrict line, Game* restrict game) {
             return false;
         }
         i32 cubes = 0;
-        if ((scu_sscanf(line + i, "%" I32_SCND "%" ISIZE_SCNN, &cubes, &read) != 1)
-                || (cubes < 0)) {
+        if (
+            (scu_sscanf(line + i, "%" I32_SCND "%" ISIZE_SCNN, &cubes, &read) != 1)
+                || (cubes < 0)
+        ) {
             return false;
         }
         i += read;

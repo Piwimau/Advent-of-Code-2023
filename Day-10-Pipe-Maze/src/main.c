@@ -223,8 +223,10 @@ static bool equal_position(const void* a, const void* b) {
  */
 static inline Tile* grid_tile_at(const Grid* grid, Position position) {
     SCU_ASSERT(grid != nullptr);
-    if ((position.x < 0) || (position.x >= grid->width)
-            || (position.y < 0) || (position.y >= grid->height)) {
+    if (
+        (position.x < 0) || (position.x >= grid->width)
+            || (position.y < 0) || (position.y >= grid->height)
+    ) {
         return nullptr;
     }
     return &grid->tiles[(position.y * grid->width) + position.x];
@@ -428,8 +430,10 @@ static GridAnalysis grid_analyze(const Grid* grid) {
         hash_position,
         equal_position
     );
-    if ((loop == nullptr)
-            || (scu_hash_set_add(loop, &grid->start) != SCU_ERROR_NONE)) {
+    if (
+        (loop == nullptr)
+            || (scu_hash_set_add(loop, &grid->start) != SCU_ERROR_NONE)
+    ) {
         goto fail;
     }
     Direction prev = DIRECTION_NONE;
@@ -461,9 +465,11 @@ static GridAnalysis grid_analyze(const Grid* grid) {
         for (isize x = 0; x < grid->width; x++) {
             current = (Position) { .x = x, .y = y };
             if (scu_hash_set_contains(loop, &current)) {
-                if (grid_is_tile(grid, current, TILE_PIPE_NORTH_SOUTH)
+                if (
+                    grid_is_tile(grid, current, TILE_PIPE_NORTH_SOUTH)
                         || grid_is_tile(grid, current, TILE_PIPE_SOUTH_EAST)
-                        || grid_is_tile(grid, current, TILE_PIPE_SOUTH_WEST)) {
+                        || grid_is_tile(grid, current, TILE_PIPE_SOUTH_WEST)
+                ) {
                     isEnclosed = !isEnclosed;
                 }
             }

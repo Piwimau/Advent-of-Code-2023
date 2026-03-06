@@ -77,8 +77,10 @@ static SCUError history_parse(
         }
         line += read;
     }
-    if ((scu_list_count(history->values) == 0)
-            || ((*line != '\n') && (*line != '\0'))) {
+    if (
+        (scu_list_count(history->values) == 0)
+            || ((*line != '\n') && (*line != '\0'))
+    ) {
         error = SCU_ERROR_INVALID_FORMAT;
         goto fail;
     }

@@ -123,9 +123,13 @@ static inline bool instruction_parse(
         &instruction->distance,
         instruction->code
     );
-    if ((count != 3) || !direction_parse(direction, &instruction->direction)
-            || (instruction->distance < 1) || (instruction->code[0] != '#')
-            || (scu_strlen(instruction->code) != (CODE_LENGTH - 1))) {
+    if (
+        (count != 3)
+            || !direction_parse(direction, &instruction->direction)
+            || (instruction->distance < 1)
+            || (instruction->code[0] != '#')
+            || (scu_strlen(instruction->code) != (CODE_LENGTH - 1))
+    ) {
         return false;
     }
     for (isize i = 1; instruction->code[i] != '\0'; i++) {

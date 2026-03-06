@@ -230,9 +230,10 @@ static SCUError workflow_parse(
     SCUError error = SCU_ERROR_NONE;
     while (*line != '}') {
         Rule rule = { };
-        if (((*line == 'x') || (*line == 'm') || (*line == 'a')
-                || (*line == 's'))
-                    && ((*(line + 1) == '<') || (*(line + 1) == '>'))) {
+        if (
+            ((*line == 'x') || (*line == 'm') || (*line == 'a') || (*line == 's'))
+                && ((*(line + 1) == '<') || (*(line + 1) == '>'))
+        ) {
             switch (*line) {
                 case 'x':
                     rule.category = CATEGORY_X;
@@ -278,8 +279,10 @@ static SCUError workflow_parse(
         }
         else {
             isize closingBraceIndex = scu_str_index_of(line, '}');
-            if ((closingBraceIndex == -1)
-                    || (closingBraceIndex >= MAX_ID_LENGTH)) {
+            if (
+                (closingBraceIndex == -1)
+                    || (closingBraceIndex >= MAX_ID_LENGTH)
+            ) {
                 error = SCU_ERROR_INVALID_FORMAT;
                 goto fail;
             }
@@ -569,10 +572,10 @@ static isize sum_of_accepted_ratings(
                     default:
                         SCU_UNREACHABLE();
                 }
-                if (((rule->type == RULE_TYPE_CMP_LT)
-                        && (value < rule->threshold))
-                            || ((rule->type == RULE_TYPE_CMP_GT)
-                                && (value > rule->threshold))) {
+                if (
+                    ((rule->type == RULE_TYPE_CMP_LT) && (value < rule->threshold))
+                        || ((rule->type == RULE_TYPE_CMP_GT) && (value > rule->threshold))
+                ) {
                     id = rule->next;
                     break;
                 }

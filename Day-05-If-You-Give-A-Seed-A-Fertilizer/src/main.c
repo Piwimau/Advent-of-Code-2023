@@ -270,8 +270,10 @@ static i64 almanac_lowest_location_single(const Almanac* almanac) {
         SCU_ARRAY_FOREACH(map, almanac->maps) {
             const Mapping* mapping;
             SCU_LIST_FOREACH(mapping, map->mappings) {
-                if ((dest >= mapping->src)
-                        && (dest < (mapping->src + mapping->length))) {
+                if (
+                    (dest >= mapping->src)
+                        && (dest < (mapping->src + mapping->length))
+                ) {
                     dest = mapping->dest + (dest - mapping->src);
                     break;
                 }
