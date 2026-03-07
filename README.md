@@ -188,7 +188,8 @@ similar in general.
 | Day 19 – Aplenty                        |   0.622 ms |   1.008 ms |   0.775 ms |   0.741 ms |           0.128 ms |
 | Day 20 – Pulse Propagation              |   7.384 ms |   7.989 ms |   7.704 ms |   7.723 ms |           0.184 ms |
 | Day 21 – Step Counter                   |  13.120 ms |  15.744 ms |  14.291 ms |  14.043 ms |           0.827 ms |
-| Total                                   | 606.230 ms | 642.117 ms | 621.390 ms | 620.233 ms |          11.931 ms |
+| Day 22 – Sand Slabs                     |   9.938 ms |  11.405 ms |  10.500 ms |  10.360 ms |           0.523 ms |
+| Total                                   | 616.168 ms | 653.522 ms | 631.890 ms | 630.593 ms |          12.454 ms |
 
 > [!NOTE]
 > The timings shown above represent actual computation times, not total process
