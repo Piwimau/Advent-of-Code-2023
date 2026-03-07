@@ -187,7 +187,8 @@ similar in general.
 | Day 18 – Lavaduct Lagoon                |   0.328 ms |   0.530 ms |   0.392 ms |   0.353 ms |           0.067 ms |
 | Day 19 – Aplenty                        |   0.622 ms |   1.008 ms |   0.775 ms |   0.741 ms |           0.128 ms |
 | Day 20 – Pulse Propagation              |   7.384 ms |   7.989 ms |   7.704 ms |   7.723 ms |           0.184 ms |
-| Total                                   | 593.110 ms | 626.373 ms | 607.099 ms | 606.190 ms |          11.104 ms |
+| Day 21 – Step Counter                   |  13.120 ms |  15.744 ms |  14.291 ms |  14.043 ms |           0.827 ms |
+| Total                                   | 606.230 ms | 642.117 ms | 621.390 ms | 620.233 ms |          11.931 ms |
 
 > [!NOTE]
 > The timings shown above represent actual computation times, not total process
