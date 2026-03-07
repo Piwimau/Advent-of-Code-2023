@@ -186,7 +186,8 @@ similar in general.
 | Day 17 – Clumsy Crucible                | 278.827 ms | 296.070 ms | 286.835 ms | 286.840 ms |           6.047 ms |
 | Day 18 – Lavaduct Lagoon                |   0.328 ms |   0.530 ms |   0.392 ms |   0.353 ms |           0.067 ms |
 | Day 19 – Aplenty                        |   0.622 ms |   1.008 ms |   0.775 ms |   0.741 ms |           0.128 ms |
-| Total                                   | 585.726 ms | 618.384 ms | 599.395 ms | 598.467 ms |          10.920 ms |
+| Day 20 – Pulse Propagation              |   7.384 ms |   7.989 ms |   7.704 ms |   7.723 ms |           0.184 ms |
+| Total                                   | 593.110 ms | 626.373 ms | 607.099 ms | 606.190 ms |          11.104 ms |
 
 > [!NOTE]
 > The timings shown above represent actual computation times, not total process
