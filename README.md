@@ -189,7 +189,8 @@ similar in general.
 | Day 20 – Pulse Propagation              |   7.384 ms |   7.989 ms |   7.704 ms |   7.723 ms |           0.184 ms |
 | Day 21 – Step Counter                   |  13.120 ms |  15.744 ms |  14.291 ms |  14.043 ms |           0.827 ms |
 | Day 22 – Sand Slabs                     |   9.938 ms |  11.405 ms |  10.500 ms |  10.360 ms |           0.523 ms |
-| Total                                   | 616.168 ms | 653.522 ms | 631.890 ms | 630.593 ms |          12.454 ms |
+| Day 23 – A Long Walk                    | 181.746 ms | 195.721 ms | 188.118 ms | 189.021 ms |           4.447 ms |
+| Total                                   | 797.914 ms | 849.243 ms | 820.008 ms | 819.614 ms |          16.901 ms |
 
 > [!NOTE]
 > The timings shown above represent actual computation times, not total process

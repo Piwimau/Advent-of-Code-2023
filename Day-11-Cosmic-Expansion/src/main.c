@@ -153,8 +153,6 @@ static SCUError image_parse(Image* image) {
         error = SCU_ERROR_OUT_OF_MEMORY;
         goto imageAllocFailed;
     }
-    image->width = 0;
-    image->height = 0;
     image->isEmptyRow = scu_list_new(SCU_SIZEOF(bool));
     if (image->isEmptyRow == nullptr) {
         error = SCU_ERROR_OUT_OF_MEMORY;
