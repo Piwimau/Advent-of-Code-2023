@@ -191,7 +191,8 @@ similar in general.
 | Day 22 – Sand Slabs                     |   9.938 ms |  11.405 ms |  10.500 ms |  10.360 ms |           0.523 ms |
 | Day 23 – A Long Walk                    | 181.746 ms | 195.721 ms | 188.118 ms | 189.021 ms |           4.447 ms |
 | Day 24 – Never Tell Me The Odds         |   0.689 ms |   0.968 ms |   0.837 ms |   0.851 ms |           0.090 ms |
-| Total                                   | 798.603 ms | 850.211 ms | 820.845 ms | 820.465 ms |          16.991 ms |
+| Day 25 – Snowverload                    |  14.609 ms |  16.359 ms |  15.395 ms |  15.357 ms |           0.508 ms |
+| Total                                   | 813.212 ms | 866.570 ms | 836.240 ms | 835.822 ms |          17.499 ms |
 
 > [!NOTE]
 > The timings shown above represent actual computation times, not total process
