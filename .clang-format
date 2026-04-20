@@ -120,7 +120,7 @@ KeepFormFeed: true
 LambdaBodyIndentation: Signature
 LineEnding: DeriveCRLF
 MainIncludeChar: Any
-NamespaceIndentation: All
+NamespaceIndentation: Inner
 NumericLiteralCase:
     ExponentLetter: Upper
     HexDigit: Upper
@@ -154,7 +154,7 @@ SpaceAfterTemplateKeyword: false
 SpaceAroundPointerQualifiers: Default
 SpaceBeforeAssignmentOperators: true
 SpaceBeforeCaseColon: false
-SpaceBeforeCpp11BracedList: true
+SpaceBeforeCpp11BracedList: false
 SpaceBeforeCtorInitializerColon: true
 SpaceBeforeInheritanceColon: true
 SpaceBeforeParens: Custom
