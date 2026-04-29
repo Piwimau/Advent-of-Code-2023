@@ -147,7 +147,7 @@ static inline void bricks_free(Brick* bricks) {
  *                    `nullptr`.
  * @return `SCU_ERROR_NONE` on success, otherwise an appropriate error code.
  */
-static SCUError bricks_parse(Brick** bricks) {
+static ScuError bricks_parse(Brick** bricks) {
     SCU_ASSERT(bricks != nullptr);
     *bricks = scu_list_new(SCU_SIZEOF(Brick));
     if (*bricks == nullptr) {
@@ -155,7 +155,7 @@ static SCUError bricks_parse(Brick** bricks) {
     }
     char* line = nullptr;
     isize size = 0;
-    SCUError error;
+    ScuError error;
     while ((error = scu_readln(&line, &size)) == SCU_ERROR_NONE) {
         isize newlineIndex = scu_str_index_of(line, '\n');
         if (newlineIndex != -1) {
@@ -211,7 +211,7 @@ static int bricks_compare_by_min_z(const void* a, const void* b) {
  * @param[in, out] bricks The list of bricks to settle.
  * @return `SCU_ERROR_NONE` on success, otherwise an appropriate error code.
  */
-static SCUError bricks_settle(Brick* bricks) {
+static ScuError bricks_settle(Brick* bricks) {
     SCU_ASSERT(bricks != nullptr);
     scu_list_sort(bricks, bricks_compare_by_min_z);
     isize* settledBrickIndices = scu_list_new(SCU_SIZEOF(isize));
@@ -243,7 +243,7 @@ static SCUError bricks_settle(Brick* bricks) {
         isize height = maxZ - minZ;
         brick->first.z = maxSettledZ + 1;
         brick->last.z = maxSettledZ + 1 + height;
-        SCUError error = scu_list_add(&settledBrickIndices, &i);
+        ScuError error = scu_list_add(&settledBrickIndices, &i);
         if (error != SCU_ERROR_NONE) {
             scu_list_free(settledBrickIndices);
             return error;
@@ -301,13 +301,13 @@ static inline void support_graph_free(SupportGraph* supportGraph) {
  *                              unspecified.
  * @return `SCU_ERROR_NONE` on success, otherwise an appropriate error code.
  */
-static SCUError bricks_build_support_graph(
+static ScuError bricks_build_support_graph(
     Brick* bricks,
     SupportGraph* supportGraph
 ) {
     SCU_ASSERT(bricks != nullptr);
     SCU_ASSERT(supportGraph != nullptr);
-    SCUError error = bricks_settle(bricks);
+    ScuError error = bricks_settle(bricks);
     if (error != SCU_ERROR_NONE) {
         return error;
     }
@@ -412,7 +412,7 @@ static isize support_graph_chain_disintegrated(
     if (remainingSupports == nullptr) {
         return -1;
     }
-    SCUQueue* queue = scu_queue_new(SCU_SIZEOF(isize));
+    ScuQueue* queue = scu_queue_new(SCU_SIZEOF(isize));
     if (queue == nullptr) {
         scu_free(remainingSupports);
         return -1;
@@ -423,7 +423,7 @@ static isize support_graph_chain_disintegrated(
             remainingSupports[j] = scu_list_count(supportGraph->supportedBy[j]);
         }
         scu_queue_clear(queue);
-        SCUError error = scu_queue_enqueue(queue, &i);
+        ScuError error = scu_queue_enqueue(queue, &i);
         if (error != SCU_ERROR_NONE) {
             totalDisintegrated = -1;
             goto end;
@@ -452,7 +452,7 @@ end:
 
 int main() {
     Brick* bricks;
-    SCUError error = bricks_parse(&bricks);
+    ScuError error = bricks_parse(&bricks);
     if (error != SCU_ERROR_NONE) {
         scu_fprintf(
             SCU_STDERR,

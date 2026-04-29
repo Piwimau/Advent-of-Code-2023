@@ -139,10 +139,10 @@ static void almanac_free(Almanac* almanac) {
  * @param[out] almanac The parsed almanac on success, otherwise the default.
  * @return `SCU_ERROR_NONE` on success, or an appropriate error code on failure.
  */
-static SCUError almanac_parse(Almanac* almanac) {
+static ScuError almanac_parse(Almanac* almanac) {
     SCU_ASSERT(almanac != nullptr);
     *almanac = (Almanac) { };
-    SCUError error;
+    ScuError error;
     char* line = nullptr;
     isize size = 0;
     Map* currentMap = nullptr;
@@ -299,8 +299,8 @@ static i64 almanac_lowest_location_ranges(const Almanac* almanac) {
     isize count = scu_list_count(almanac->seeds);
     SCU_ASSERT((count > 0) && ((count % 2) == 0));
     i64 lowestLocation = I64_MAX;
-    SCUStack* oldRanges = scu_stack_new(SCU_SIZEOF(Range));
-    SCUStack* newRanges = scu_stack_new(SCU_SIZEOF(Range));
+    ScuStack* oldRanges = scu_stack_new(SCU_SIZEOF(Range));
+    ScuStack* newRanges = scu_stack_new(SCU_SIZEOF(Range));
     for (isize i = 0; i < count; i += 2) {
         scu_stack_clear(oldRanges);
         Range oldRange = {
@@ -350,7 +350,7 @@ static i64 almanac_lowest_location_ranges(const Almanac* almanac) {
                     scu_stack_push(newRanges, &oldRange);
                 }
             }
-            SCUStack* temp = oldRanges;
+            ScuStack* temp = oldRanges;
             oldRanges = newRanges;
             newRanges = temp;
         }
@@ -365,7 +365,7 @@ static i64 almanac_lowest_location_ranges(const Almanac* almanac) {
 }
 
 int main() {
-    SCUError error;
+    ScuError error;
     Almanac almanac;
     if ((error = almanac_parse(&almanac)) != SCU_ERROR_NONE) {
         scu_fprintf(

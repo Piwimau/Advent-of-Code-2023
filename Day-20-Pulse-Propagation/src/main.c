@@ -52,7 +52,7 @@ typedef struct Module {
      * `MODULE_TYPE_CONJUNCTION`. For modules of type `MODULE_TYPE_FLIP_FLOP` or
      * `MODULE_TYPE_BROADCASTER`, this is a `nullptr`.
      */
-    SCUHashMap* inputs;
+    ScuHashMap* inputs;
 
 } Module;
 
@@ -163,7 +163,7 @@ static inline void module_free(Module* module) {
  * @return `SCU_ERROR_NONE` if a module was successfully parsed, otherwise an
  * appropriate error code.
  */
-static inline SCUError module_parse(
+static inline ScuError module_parse(
     const char* restrict line,
     Module* restrict module
 ) {
@@ -204,7 +204,7 @@ static inline SCUError module_parse(
         return SCU_ERROR_OUT_OF_MEMORY;
     }
     module->isOn = false;
-    SCUError error = SCU_ERROR_NONE;
+    ScuError error = SCU_ERROR_NONE;
     if (module->type == MODULE_TYPE_CONJUNCTION) {
         module->inputs = scu_hash_map_new(
             SCU_SIZEOF(char[MAX_NAME_LENGTH]),
@@ -285,9 +285,9 @@ static bool module_equal(const void* a, const void* b) {
  *
  * @param[in, out] modules The map of modules to deallocate.
  */
-static inline void modules_free(SCUHashMap* modules) {
+static inline void modules_free(ScuHashMap* modules) {
     if (modules != nullptr) {
-        SCUHashMapEntry entry;
+        ScuHashMapEntry entry;
         SCU_HASH_MAP_FOREACH(entry, modules) {
             module_free(entry.value);
         }
@@ -307,7 +307,7 @@ static inline void modules_free(SCUHashMap* modules) {
  *                     `nullptr`.
  * @return `SCU_ERROR_NONE` on success, otherwise an appropriate error code.
  */
-static SCUError modules_parse(SCUHashMap** modules) {
+static ScuError modules_parse(ScuHashMap** modules) {
     SCU_ASSERT(modules != nullptr);
     *modules = scu_hash_map_new(
         SCU_SIZEOF(char[MAX_NAME_LENGTH]),
@@ -321,7 +321,7 @@ static SCUError modules_parse(SCUHashMap** modules) {
     }
     char* line = nullptr;
     isize size = 0;
-    SCUError error;
+    ScuError error;
     while ((error = scu_readln(&line, &size)) == SCU_ERROR_NONE) {
         isize newlineIndex = scu_str_index_of(line, '\n');
         if (newlineIndex != -1) {
@@ -344,7 +344,7 @@ static SCUError modules_parse(SCUHashMap** modules) {
     if (error != SCU_ERROR_END_OF_FILE) {
         goto fail;
     }
-    SCUHashMapEntry entry;
+    ScuHashMapEntry entry;
     SCU_HASH_MAP_FOREACH(entry, *modules) {
         char (*name)[MAX_NAME_LENGTH] = entry.key;
         Module* module = entry.value;
@@ -376,16 +376,16 @@ fail:
  * @param[in, out] modules The map of modules to simulate.
  * @return The product of the number of low and high pulses, or `-1` on failure.
  */
-static isize modules_product_of_pulses(SCUHashMap* modules) {
+static isize modules_product_of_pulses(ScuHashMap* modules) {
     SCU_ASSERT(modules != nullptr);
-    SCUQueue* queue = scu_queue_new(SCU_SIZEOF(Pulse));
+    ScuQueue* queue = scu_queue_new(SCU_SIZEOF(Pulse));
     if (queue == nullptr) {
         return -1;
     }
     isize lowPulses = 0;
     isize highPulses = 0;
     for (isize i = 0; i < BUTTON_PRESSES; i++) {
-        SCUError error = scu_queue_enqueue(
+        ScuError error = scu_queue_enqueue(
             queue,
             &(Pulse) {
                 .src = "button",
@@ -439,7 +439,7 @@ static isize modules_product_of_pulses(SCUHashMap* modules) {
                         goto fail;
                     }
                     bool allHigh = true;
-                    SCUHashMapEntry entry;
+                    ScuHashMapEntry entry;
                     SCU_HASH_MAP_FOREACH(entry, module->inputs) {
                         bool isHigh = *(bool*) entry.value;
                         if (!isHigh) {
@@ -498,16 +498,16 @@ fail:
  *
  * @param[in, out] modules The map of modules to reset.
  */
-static void modules_reset(SCUHashMap* modules) {
+static void modules_reset(ScuHashMap* modules) {
     SCU_ASSERT(modules != nullptr);
-    SCUHashMapEntry entry;
+    ScuHashMapEntry entry;
     SCU_HASH_MAP_FOREACH(entry, modules) {
         Module* module = entry.value;
         if (module->type == MODULE_TYPE_FLIP_FLOP) {
             module->isOn = false;
         }
         else if (module->type == MODULE_TYPE_CONJUNCTION) {
-            SCUHashMapEntry inputEntry;
+            ScuHashMapEntry inputEntry;
             SCU_HASH_MAP_FOREACH(inputEntry, module->inputs) {
                 bool* isHigh = inputEntry.value;
                 *isHigh = false;
@@ -541,11 +541,11 @@ static inline isize lcm(isize a, isize b) {
  * @param[in, out] modules The map of modules to simulate.
  * @return The minimum number of button presses, or `-1` on failure.
  */
-static isize modules_min_button_presses(SCUHashMap* modules) {
+static isize modules_min_button_presses(ScuHashMap* modules) {
     SCU_ASSERT(modules != nullptr);
     modules_reset(modules);
     Module* rxInput = nullptr;
-    SCUHashMapEntry entry;
+    ScuHashMapEntry entry;
     SCU_HASH_MAP_FOREACH(entry, modules) {
         Module* module = entry.value;
         const char (*output)[MAX_NAME_LENGTH];
@@ -560,7 +560,7 @@ rxInputFound:
     if ((rxInput == nullptr) || (rxInput->type != MODULE_TYPE_CONJUNCTION)) {
         return -1;
     }
-    SCUHashMap* cycleLengths = scu_hash_map_new(
+    ScuHashMap* cycleLengths = scu_hash_map_new(
         SCU_SIZEOF(char[MAX_NAME_LENGTH]),
         SCU_SIZEOF(isize),
         module_name_hash,
@@ -570,7 +570,7 @@ rxInputFound:
     if (cycleLengths == nullptr) {
         return -1;
     }
-    SCUQueue* queue = scu_queue_new(SCU_SIZEOF(Pulse));
+    ScuQueue* queue = scu_queue_new(SCU_SIZEOF(Pulse));
     if (queue == nullptr) {
         scu_hash_map_free(cycleLengths);
         return -1;
@@ -580,7 +580,7 @@ rxInputFound:
         scu_hash_map_count(cycleLengths) < scu_hash_map_count(rxInput->inputs);
         i++
     ) {
-        SCUError error = scu_queue_enqueue(
+        ScuError error = scu_queue_enqueue(
             queue,
             &(Pulse) {
                 .src = "button",
@@ -644,7 +644,7 @@ rxInputFound:
                         goto fail;
                     }
                     bool allHigh = true;
-                    SCUHashMapEntry inputEntry;
+                    ScuHashMapEntry inputEntry;
                     SCU_HASH_MAP_FOREACH(inputEntry, module->inputs) {
                         bool isHigh = *(bool*) inputEntry.value;
                         if (!isHigh) {
@@ -691,7 +691,7 @@ rxInputFound:
         }
     }
     isize minButtonPresses = 1;
-    SCUHashMapEntry cycleEntry;
+    ScuHashMapEntry cycleEntry;
     SCU_HASH_MAP_FOREACH(cycleEntry, cycleLengths) {
         isize cycleLength = *(isize*) cycleEntry.value;
         minButtonPresses = lcm(minButtonPresses, cycleLength);
@@ -706,8 +706,8 @@ fail:
 }
 
 int main() {
-    SCUHashMap* modules;
-    SCUError error = modules_parse(&modules);
+    ScuHashMap* modules;
+    ScuError error = modules_parse(&modules);
     if (error != SCU_ERROR_NONE) {
         scu_fprintf(
             SCU_STDERR,

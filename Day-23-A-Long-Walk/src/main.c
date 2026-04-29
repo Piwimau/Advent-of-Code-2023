@@ -236,7 +236,7 @@ static inline void grid_free(Grid* grid) {
  * @param[out] grid The parsed grid on success, otherwise unspecified.
  * @return `SCU_ERROR_NONE` on success, otherwise an appropriate error code.
  */
-static SCUError grid_parse(Grid* grid) {
+static ScuError grid_parse(Grid* grid) {
     SCU_ASSERT(grid != nullptr);
     *grid = (Grid) {};
     grid->tiles = scu_list_new(SCU_SIZEOF(Tile));
@@ -246,7 +246,7 @@ static SCUError grid_parse(Grid* grid) {
     char* line = nullptr;
     isize size = 0;
     bool foundWidth = false;
-    SCUError error;
+    ScuError error;
     while ((error = scu_readln(&line, &size)) == SCU_ERROR_NONE) {
         isize newlineIndex = scu_str_index_of(line, '\n');
         if (newlineIndex != -1) {
@@ -434,7 +434,7 @@ static bool grid_to_compressed_graph(
     if (visited == nullptr) {
         return false;
     }
-    SCUQueue* queue = scu_queue_new(SCU_SIZEOF(CompressionState));
+    ScuQueue* queue = scu_queue_new(SCU_SIZEOF(CompressionState));
     if (queue == nullptr) {
         scu_free(visited);
         return false;
@@ -447,7 +447,7 @@ static bool grid_to_compressed_graph(
             grid->width * grid->height * SCU_SIZEOF(bool)
         );
         visited[grid_index(grid, junction->position)] = true;
-        SCUError error = scu_queue_enqueue(
+        ScuError error = scu_queue_enqueue(
             queue,
             &(CompressionState) { .position = junction->position, .steps = 0 }
         );
@@ -586,7 +586,7 @@ static isize graph_longest_hike(const Graph* graph) {
 
 int main() {
     Grid grid;
-    SCUError error = grid_parse(&grid);
+    ScuError error = grid_parse(&grid);
     if (error != SCU_ERROR_NONE) {
         scu_fprintf(
             SCU_STDERR,

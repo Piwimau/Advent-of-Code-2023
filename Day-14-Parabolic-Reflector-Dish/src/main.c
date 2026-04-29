@@ -117,7 +117,7 @@ static inline void platform_free(Platform* platform) {
  * @return `SCU_ERROR_NONE` if a platform was successfully parsed, otherwise an
  * appropriate error code.
  */
-static SCUError platform_parse(Platform* platform) {
+static ScuError platform_parse(Platform* platform) {
     SCU_ASSERT(platform != nullptr);
     platform->width = 0;
     platform->height = 0;
@@ -128,7 +128,7 @@ static SCUError platform_parse(Platform* platform) {
     bool foundWidth = false;
     char* line = nullptr;
     isize size = 0;
-    SCUError error;
+    ScuError error;
     while ((error = scu_readln(&line, &size)) == SCU_ERROR_NONE) {
         isize newlineIndex = scu_str_index_of(line, '\n');
         if (newlineIndex != -1) {
@@ -177,7 +177,7 @@ fail:
  * @return `SCU_ERROR_NONE` if the platform was successfully cloned, or
  * `SCU_ERROR_OUT_OF_MEMORY` if an out-of-memory condition occurred.
  */
-static inline SCUError platform_clone(
+static inline ScuError platform_clone(
     const Platform* restrict platform,
     Platform* restrict clone
 ) {
@@ -382,7 +382,7 @@ static bool platform_equal(const void* a, const void* b) {
 static isize platform_load_after(Platform* platform, isize cycles) {
     SCU_ASSERT(platform != nullptr);
     SCU_ASSERT(cycles > 0);
-    SCUHashMap* cache = scu_hash_map_new(
+    ScuHashMap* cache = scu_hash_map_new(
         SCU_SIZEOF(Platform),
         SCU_SIZEOF(isize),
         platform_hash,
@@ -437,7 +437,7 @@ static isize platform_load_after(Platform* platform, isize cycles) {
 
 int main() {
     Platform platform;
-    SCUError error = platform_parse(&platform);
+    ScuError error = platform_parse(&platform);
     if (error != SCU_ERROR_NONE) {
         scu_fprintf(
             SCU_STDERR,

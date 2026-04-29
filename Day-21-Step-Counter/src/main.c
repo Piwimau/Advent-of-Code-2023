@@ -169,7 +169,7 @@ static inline void map_free(Map* map) {
  * @return `SCU_ERROR_NONE` if a map was successfully parsed, otherwise an
  * appropriate error code.
  */
-static SCUError map_parse(Map* map) {
+static ScuError map_parse(Map* map) {
     SCU_ASSERT(map != nullptr);
     map->width = 0;
     map->height = 0;
@@ -182,7 +182,7 @@ static SCUError map_parse(Map* map) {
     bool foundStart = false;
     char* line = nullptr;
     isize size = 0;
-    SCUError error;
+    ScuError error;
     while ((error = scu_readln(&line, &size)) == SCU_ERROR_NONE) {
         isize newlineIndex = scu_str_index_of(line, '\n');
         if (newlineIndex != -1) {
@@ -268,12 +268,12 @@ static isize map_reachable(const Map* map, isize steps, bool isInfinite) {
     }
     Position start = isInfinite ? (Position) { .x = 0, .y = 0 } : map->start;
     dists[((start.y + offset.y) * width) + (start.x + offset.x)] = 0;
-    SCUQueue* queue = scu_queue_new(SCU_SIZEOF(Position));
+    ScuQueue* queue = scu_queue_new(SCU_SIZEOF(Position));
     if (queue == nullptr) {
         scu_free(dists);
         return -1;
     }
-    SCUError error = scu_queue_enqueue(queue, &start);
+    ScuError error = scu_queue_enqueue(queue, &start);
     if (error != SCU_ERROR_NONE) {
         goto fail;
     }
@@ -367,7 +367,7 @@ static inline isize map_reachable_infinite(const Map* map) {
 
 int main() {
     Map map;
-    SCUError error = map_parse(&map);
+    ScuError error = map_parse(&map);
     if (error != SCU_ERROR_NONE) {
         scu_fprintf(
             SCU_STDERR,

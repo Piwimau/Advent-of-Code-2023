@@ -47,7 +47,7 @@ static bool card_parse(const char* restrict line, Card* restrict card) {
         return false;
     }
     line += read;
-    SCUHashSet* winningNumbers = scu_hash_set_new(
+    ScuHashSet* winningNumbers = scu_hash_set_new(
         SCU_SIZEOF(i32),
         scu_hash_i32,
         scu_equal_i32
@@ -116,7 +116,7 @@ static i32 total_cards(const Card* cards) {
 }
 
 int main() {
-    SCUError error = SCU_ERROR_NONE;
+    ScuError error = SCU_ERROR_NONE;
     char* line = nullptr;
     isize size = 0;
     Card* cards = scu_list_new(SCU_SIZEOF(Card));

@@ -264,13 +264,13 @@ static inline void hand_classify_with_joker(Hand* hand) {
  *                   `nullptr`.
  * @return `SCU_ERROR_NONE` on success, or an appropriate error code on failure.
  */
-static SCUError parse_hands(Hand** hands) {
+static ScuError parse_hands(Hand** hands) {
     SCU_ASSERT(hands != nullptr);
     *hands = scu_list_new(SCU_SIZEOF(Hand));
     if (*hands == nullptr) {
         return SCU_ERROR_OUT_OF_MEMORY;
     }
-    SCUError error;
+    ScuError error;
     char* line = nullptr;
     isize size = 0;
     while ((error = scu_readln(&line, &size)) == SCU_ERROR_NONE) {
@@ -379,7 +379,7 @@ static i32 total_winnings_with_joker(Hand* hands) {
 
 int main() {
     Hand* hands;
-    SCUError error = parse_hands(&hands);
+    ScuError error = parse_hands(&hands);
     if (error != SCU_ERROR_NONE) {
         scu_fprintf(
             SCU_STDERR,

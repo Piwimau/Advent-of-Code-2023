@@ -410,7 +410,7 @@ static i32 schematic_sum_of_gear_ratios(const Schematic* schematic) {
 int main() {
     char* buffer = nullptr;
     isize size = 0;
-    SCUError error = scu_readall(&buffer, &size);
+    ScuError error = scu_readall(&buffer, &size);
     if (error != SCU_ERROR_NONE) {
         scu_fprintf(
             SCU_STDERR,

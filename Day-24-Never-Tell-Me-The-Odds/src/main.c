@@ -106,7 +106,7 @@ static inline void hailstones_free(Hailstone* hailstones) {
  *                        `nullptr`.
  * @return `SCU_ERROR_NONE` on success, otherwise an appropriate error code.
  */
-static SCUError hailstones_parse(Hailstone** hailstones) {
+static ScuError hailstones_parse(Hailstone** hailstones) {
     SCU_ASSERT(hailstones != nullptr);
     *hailstones = scu_list_new(SCU_SIZEOF(Hailstone));
     if (*hailstones == nullptr) {
@@ -114,7 +114,7 @@ static SCUError hailstones_parse(Hailstone** hailstones) {
     }
     char* line = nullptr;
     isize size = 0;
-    SCUError error;
+    ScuError error;
     while ((error = scu_readln(&line, &size)) == SCU_ERROR_NONE) {
         Hailstone hailstone;
         if (hailstone_parse(line, &hailstone)) {
@@ -265,7 +265,7 @@ static f64 hailstones_sum_of_perfect_throw(const Hailstone* hailstones) {
 
 int main() {
     Hailstone* hailstones;
-    SCUError error = hailstones_parse(&hailstones);
+    ScuError error = hailstones_parse(&hailstones);
     if (error != SCU_ERROR_NONE) {
         scu_fprintf(
             SCU_STDERR,

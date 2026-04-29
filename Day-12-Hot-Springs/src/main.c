@@ -125,13 +125,13 @@ static inline void record_free(Record* record) {
  * @return `SCU_ERROR_NONE` if the record was successfully parsed, otherwise an
  * appropriate error code.
  */
-static inline SCUError record_parse(
+static inline ScuError record_parse(
     const char* restrict line,
     Record* restrict record
 ) {
     SCU_ASSERT(line != nullptr);
     SCU_ASSERT(record != nullptr);
-    SCUError error = SCU_ERROR_NONE;
+    ScuError error = SCU_ERROR_NONE;
     record->conditions = scu_list_new(SCU_SIZEOF(Condition));
     if (record->conditions == nullptr) {
         error = SCU_ERROR_OUT_OF_MEMORY;
@@ -196,7 +196,7 @@ fail:
 static inline i64 record_count_possible_arrangements(
     const Record* record,
     State state,
-    SCUHashMap* cache
+    ScuHashMap* cache
 ) {
     SCU_ASSERT(record != nullptr);
     SCU_ASSERT(cache != nullptr);
@@ -283,7 +283,7 @@ static inline i64 record_count_possible_arrangements(
 static bool record_unfold(Record* record) {
     SCU_ASSERT(record != nullptr);
     isize originalConditions = scu_list_count(record->conditions);
-    SCUError error = scu_list_ensure_capacity(
+    ScuError error = scu_list_ensure_capacity(
         &record->conditions,
         originalConditions * UNFOLD_COPIES
     );
@@ -356,7 +356,7 @@ static inline void records_free(Record* records) {
  * @return `SCU_ERROR_NONE` if the records were successfully parsed, otherwise
  * an appropriate error code.
  */
-static SCUError records_parse(Record** records) {
+static ScuError records_parse(Record** records) {
     SCU_ASSERT(records != nullptr);
     *records = scu_list_new(SCU_SIZEOF(Record));
     if (*records == nullptr) {
@@ -364,7 +364,7 @@ static SCUError records_parse(Record** records) {
     }
     char* line = nullptr;
     isize size = 0;
-    SCUError error;
+    ScuError error;
     while ((error = scu_readln(&line, &size)) == SCU_ERROR_NONE) {
         isize newlineIndex = scu_str_index_of(line, '\n');
         if (newlineIndex != -1) {
@@ -440,7 +440,7 @@ static bool state_equal(const void* a, const void* b) {
  */
 static i64 records_sum_of_possible_arrangements(const Record* records) {
     SCU_ASSERT(records != nullptr);
-    SCUHashMap* cache = scu_hash_map_new(
+    ScuHashMap* cache = scu_hash_map_new(
         SCU_SIZEOF(State),
         SCU_SIZEOF(i64),
         state_hash,
@@ -488,7 +488,7 @@ static bool records_unfold(Record* records) {
 
 int main() {
     Record* records;
-    SCUError error = records_parse(&records);
+    ScuError error = records_parse(&records);
     if (error != SCU_ERROR_NONE) {
         scu_fprintf(
             SCU_STDERR,

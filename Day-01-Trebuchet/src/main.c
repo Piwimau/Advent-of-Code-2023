@@ -104,7 +104,7 @@ static inline bool find_calibration_values(
 }
 
 int main() {
-    SCUError error = SCU_ERROR_NONE;
+    ScuError error = SCU_ERROR_NONE;
     char* line = nullptr;
     isize size = 0;
     i32 sumOfCalibrationValues = 0;

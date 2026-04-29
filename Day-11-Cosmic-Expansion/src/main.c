@@ -144,9 +144,9 @@ static void image_free(Image* image) {
  * @param[out] image The parsed image on success, otherwise unspecified.
  * @return `SCU_ERROR_NONE` on success, or an appropriate error code on failure.
  */
-static SCUError image_parse(Image* image) {
+static ScuError image_parse(Image* image) {
     SCU_ASSERT(image != nullptr);
-    SCUError error = SCU_ERROR_NONE;
+    ScuError error = SCU_ERROR_NONE;
     *image = (Image) { };
     image->pixels = scu_list_new(SCU_SIZEOF(Pixel));
     if (image->pixels == nullptr) {
@@ -307,7 +307,7 @@ static isize image_sum_of_shortest_path_lengths(
 
 int main() {        
     Image image;
-    SCUError error = image_parse(&image);
+    ScuError error = image_parse(&image);
     if (error != SCU_ERROR_NONE) {
         scu_fprintf(
             SCU_STDERR,

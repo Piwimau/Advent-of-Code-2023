@@ -50,7 +50,7 @@ typedef struct Race {
  * @param[out] races A list of the parsed races, or `nullptr` on failure.
  * @return `SCU_ERROR_NONE` on success, or an appropriate error code on failure.
  */
-static SCUError parse_races(Race** races) {
+static ScuError parse_races(Race** races) {
     SCU_ASSERT(races != nullptr);
     *races = scu_list_new(SCU_SIZEOF(Race));
     if (*races == nullptr) {
@@ -58,7 +58,7 @@ static SCUError parse_races(Race** races) {
     }
     char* line = nullptr;
     isize size = 0;
-    SCUError error = scu_readln(&line, &size);
+    ScuError error = scu_readln(&line, &size);
     if (error != SCU_ERROR_NONE) {
         goto fail;
     }
@@ -158,7 +158,7 @@ static i64 win_possibilities_single_combined(const Race* races) {
     isize size = 0;
     const Race* race;
     SCU_LIST_FOREACH(race, races) {
-        SCUError error = scu_rasnprintf(&temp, &size, "%" I64_PRID, race->time);
+        ScuError error = scu_rasnprintf(&temp, &size, "%" I64_PRID, race->time);
         if (error != SCU_ERROR_NONE) {
             goto fail;
         }
@@ -169,7 +169,7 @@ static i64 win_possibilities_single_combined(const Race* races) {
     }
     temp[0] = '\0';
     SCU_LIST_FOREACH(race, races) {
-        SCUError error = scu_rasnprintf(
+        ScuError error = scu_rasnprintf(
             &temp,
             &size,
             "%" I64_PRID,
@@ -193,7 +193,7 @@ fail:
 
 int main() {
     Race* races;
-    SCUError error = parse_races(&races);
+    ScuError error = parse_races(&races);
     if (error != SCU_ERROR_NONE) {
         scu_fprintf(
             SCU_STDERR,

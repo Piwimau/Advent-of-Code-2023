@@ -195,7 +195,7 @@ static inline void instruction_fix(Instruction* instruction) {
  * @return `SCU_ERROR_NONE` if a list of instructions was successfully parsed,
  * otherwise an appropriate error code.
  */
-static SCUError instructions_parse(Instruction** instructions) {
+static ScuError instructions_parse(Instruction** instructions) {
     SCU_ASSERT(instructions != nullptr);
     *instructions = scu_list_new(SCU_SIZEOF(Instruction));
     if (*instructions == nullptr) {
@@ -203,7 +203,7 @@ static SCUError instructions_parse(Instruction** instructions) {
     }
     char* line = nullptr;
     isize size = 0;
-    SCUError error;
+    ScuError error;
     while ((error = scu_readln(&line, &size)) == SCU_ERROR_NONE) {
         Instruction instruction;
         if (!instruction_parse(line, &instruction)) {
@@ -280,7 +280,7 @@ static isize lagoon_volume(const Instruction* instructions) {
 
 int main() {
     Instruction* instructions;
-    SCUError error = instructions_parse(&instructions);
+    ScuError error = instructions_parse(&instructions);
     if (error != SCU_ERROR_NONE) {
         scu_fprintf(
             SCU_STDERR,

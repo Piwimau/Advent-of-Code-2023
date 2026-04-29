@@ -99,7 +99,7 @@ static inline void grid_free(Grid* grid) {
  * @return `SCU_ERROR_NONE` if a grid was successfully parsed, otherwise an
  * appropriate error code.
  */
-static SCUError grid_parse(Grid* grid) {
+static ScuError grid_parse(Grid* grid) {
     SCU_ASSERT(grid != nullptr);
     grid->width = 0;
     grid->height = 0;
@@ -110,7 +110,7 @@ static SCUError grid_parse(Grid* grid) {
     bool foundWidth = false;
     char* line = nullptr;
     isize size = 0;
-    SCUError error;
+    ScuError error;
     while ((error = scu_readln(&line, &size)) == SCU_ERROR_NONE) {
         isize newlineIndex = scu_str_index_of(line, '\n');
         if (newlineIndex != -1) {
@@ -279,7 +279,7 @@ static isize grid_min_heat_loss(
     SCU_ASSERT(minStraightMoves >= 1);
     SCU_ASSERT(maxStraightMoves >= minStraightMoves);
     isize minLoss = -1;
-    SCUHashMap* minLossByState = scu_hash_map_new(
+    ScuHashMap* minLossByState = scu_hash_map_new(
         SCU_SIZEOF(State),
         SCU_SIZEOF(isize),
         state_hash,
@@ -289,7 +289,7 @@ static isize grid_min_heat_loss(
     if (minLossByState == nullptr) {
         return -1;
     }
-    SCUPrioQueue* queue = scu_prio_queue_new(
+    ScuPrioQueue* queue = scu_prio_queue_new(
         SCU_SIZEOF(State),
         SCU_SIZEOF(isize),
         scu_compare_isize
@@ -303,7 +303,7 @@ static isize grid_min_heat_loss(
         .straightMoves = 0
     };
     isize zeroLoss = 0;
-    SCUError error = scu_hash_map_add(minLossByState, &startRight, &zeroLoss);
+    ScuError error = scu_hash_map_add(minLossByState, &startRight, &zeroLoss);
     if (error != SCU_ERROR_NONE) {
         goto end;
     }
@@ -434,7 +434,7 @@ end:
 
 int main() {
     Grid grid;
-    SCUError error = grid_parse(&grid);
+    ScuError error = grid_parse(&grid);
     if (error != SCU_ERROR_NONE) {
         scu_fprintf(
             SCU_STDERR,

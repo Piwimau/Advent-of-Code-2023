@@ -88,7 +88,7 @@ static inline void step_free(Step* step) {
  * @return `SCU_ERROR_NONE` if a step was successfully parsed, otherwise an
  * appropriate error code.
  */
-static inline SCUError step_parse(
+static inline ScuError step_parse(
     const char* restrict* restrict line,
     Step* restrict step
 ) {
@@ -157,7 +157,7 @@ static inline void steps_free(Step* steps) {
  * @return `SCU_ERROR_NONE` if a list of steps was successfully parsed,
  * otherwise an appropriate error code.
  */
-static SCUError steps_parse(Step** steps) {
+static ScuError steps_parse(Step** steps) {
     SCU_ASSERT(steps != nullptr);
     *steps = scu_list_new(SCU_SIZEOF(Step));
     if (*steps == nullptr) {
@@ -165,7 +165,7 @@ static SCUError steps_parse(Step** steps) {
     }
     char* line = nullptr;
     isize size = 0;
-    SCUError error = scu_readall(&line, &size);
+    ScuError error = scu_readall(&line, &size);
     if (error != SCU_ERROR_NONE) {
         goto fail;
     }
@@ -224,7 +224,7 @@ static isize steps_sum_of_hashes(const Step* steps) {
     isize sumOfHashes = 0;
     const Step* step;
     SCU_LIST_FOREACH(step, steps) {
-        SCUError error = scu_rsnprintf(
+        ScuError error = scu_rsnprintf(
             &buffer,
             &size,
             "%s%c%c",
@@ -308,7 +308,7 @@ end:
 
 int main() {
     Step* steps;
-    SCUError error = steps_parse(&steps);
+    ScuError error = steps_parse(&steps);
     if (error != SCU_ERROR_NONE) {
         scu_fprintf(
             SCU_STDERR,

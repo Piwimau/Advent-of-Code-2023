@@ -89,7 +89,14 @@ static inline bool game_parse(const char* restrict line, Game* restrict game) {
     SCU_ASSERT(game != nullptr);
     *game = (Game) { .id = -1, .minCubes = { -1, -1, -1 } };
     isize read = 0;
-    if (scu_sscanf(line, "Game %" I32_SCND ": %" ISIZE_SCNN, &game->id, &read) != 1) {
+    if (
+        scu_sscanf(
+            line,
+            "Game %" I32_SCND ": %" ISIZE_SCNN,
+            &game->id,
+            &read
+        ) != 1
+    ) {
         return false;
     }
     line += read;
@@ -163,7 +170,7 @@ static inline i32 game_power(const Game* game) {
 }
 
 int main() {
-    SCUError error = SCU_ERROR_NONE;
+    ScuError error = SCU_ERROR_NONE;
     char* line = nullptr;
     isize size = 0;
     i32 sumOfIds = 0;

@@ -112,9 +112,9 @@ static bool name_equal(const void* a, const void* b) {
  * @param[out] graph The parsed graph on success, otherwise unspecified.
  * @return `SCU_ERROR_NONE` on success, otherwise an appropriate error code.
  */
-static SCUError graph_parse(Graph* graph) {
+static ScuError graph_parse(Graph* graph) {
     SCU_ASSERT(graph != nullptr);
-    SCUHashMap* nameToIdx = scu_hash_map_new(
+    ScuHashMap* nameToIdx = scu_hash_map_new(
         SCU_SIZEOF(char[MAX_NAME_SIZE]),
         SCU_SIZEOF(i32),
         name_hash,
@@ -131,7 +131,7 @@ static SCUError graph_parse(Graph* graph) {
     }
     char* line = nullptr;
     isize size = 0;
-    SCUError error;
+    ScuError error;
     while ((error = scu_readln(&line, &size)) == SCU_ERROR_NONE) {
         isize newlineIdx = scu_str_index_of(line, '\n');
         if (newlineIdx != -1) {
@@ -254,7 +254,7 @@ static inline bool find_path(
     i32 dst,
     i32* restrict parent,
     bool* visited,
-    SCUQueue* queue
+    ScuQueue* queue
 ) {
     SCU_ASSERT(residuals != nullptr);
     SCU_ASSERT(count >= 0);
@@ -303,7 +303,7 @@ static inline i32 count_reachable(
     i32 count,
     i32 src,
     bool* visited,
-    SCUQueue* queue
+    ScuQueue* queue
 ) {
     SCU_ASSERT(residuals != nullptr);
     SCU_ASSERT(count >= 0);
@@ -341,7 +341,7 @@ static i32 graph_product_of_group_sizes(const Graph* graph) {
     i32* residuals = scu_malloc(graph->nodes * graph->nodes * SCU_SIZEOF(i32));
     i32* parent = scu_malloc(graph->nodes * SCU_SIZEOF(i32));
     bool* visited = scu_malloc(graph->nodes * SCU_SIZEOF(bool));
-    SCUQueue* queue = scu_queue_new(SCU_SIZEOF(i32));
+    ScuQueue* queue = scu_queue_new(SCU_SIZEOF(i32));
     if ((residuals == nullptr) || (parent == nullptr) || (visited == nullptr)
         || (queue == nullptr)) {
         goto end;
@@ -394,7 +394,7 @@ end:
 
 int main() {
     Graph graph;
-    SCUError error = graph_parse(&graph);
+    ScuError error = graph_parse(&graph);
     if (error != SCU_ERROR_NONE) {
         scu_fprintf(
             SCU_STDERR,

@@ -105,7 +105,7 @@ static inline void pattern_free(Pattern* pattern) {
  * `SCU_ERROR_END_OF_FILE` if a pattern was successfully parsed but the
  * end-of-file condition occurred, otherwise an appropriate error code.
  */
-static inline SCUError pattern_parse(Pattern* pattern) {
+static inline ScuError pattern_parse(Pattern* pattern) {
     SCU_ASSERT(pattern != nullptr);
     pattern->width = 0;
     pattern->height = 0;
@@ -116,7 +116,7 @@ static inline SCUError pattern_parse(Pattern* pattern) {
     bool foundWidth = false;
     char* line = nullptr;
     isize size = 0;
-    SCUError error;
+    ScuError error;
     while ((error = scu_readln(&line, &size)) == SCU_ERROR_NONE) {
         isize newlineIndex = scu_str_index_of(line, '\n');
         if (newlineIndex != -1) {
@@ -306,13 +306,13 @@ static void patterns_free(Pattern* patterns) {
  * @return `SCU_ERROR_NONE` if a list of patterns was successfully parsed,
  * otherwise an appropriate error code.
  */
-static SCUError patterns_parse(Pattern** patterns) {
+static ScuError patterns_parse(Pattern** patterns) {
     SCU_ASSERT(patterns != nullptr);
     *patterns = scu_list_new(SCU_SIZEOF(Pattern));
     if (*patterns == nullptr) {
         return SCU_ERROR_OUT_OF_MEMORY;
     }
-    SCUError error;
+    ScuError error;
     Pattern pattern;
     while ((error = pattern_parse(&pattern)) == SCU_ERROR_NONE) {
         error = scu_list_add(patterns, &pattern);
@@ -364,7 +364,7 @@ static isize patterns_score(const Pattern* patterns, isize targetDiff) {
 
 int main() {
     Pattern* patterns;
-    SCUError error = patterns_parse(&patterns);
+    ScuError error = patterns_parse(&patterns);
     if (error != SCU_ERROR_NONE) {
         scu_fprintf(
             SCU_STDERR,

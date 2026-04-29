@@ -211,7 +211,7 @@ static inline void workflow_free(Workflow* workflow) {
  * @param[out] workflow The parsed workflow on success, otherwise unspecified.
  * @return `SCU_ERROR_NONE` on success, otherwise an appropriate error code.
  */
-static SCUError workflow_parse(
+static ScuError workflow_parse(
     const char* restrict line,
     Workflow* restrict workflow
 ) {
@@ -227,7 +227,7 @@ static SCUError workflow_parse(
         return SCU_ERROR_OUT_OF_MEMORY;
     }
     line += openBraceIndex + 1;
-    SCUError error = SCU_ERROR_NONE;
+    ScuError error = SCU_ERROR_NONE;
     while (*line != '}') {
         Rule rule = { };
         if (
@@ -453,8 +453,8 @@ static bool workflow_id_equal(const void* a, const void* b) {
  *                       `nullptr`.
  * @return `SCU_ERROR_NONE` on success, otherwise an appropriate error code.
  */
-static SCUError parse_workflows_and_ratings(
-    SCUHashMap** workflows,
+static ScuError parse_workflows_and_ratings(
+    ScuHashMap** workflows,
     Rating** ratings
 ) {
     SCU_ASSERT(workflows != nullptr);
@@ -470,7 +470,7 @@ static SCUError parse_workflows_and_ratings(
         *ratings = nullptr;
         return SCU_ERROR_OUT_OF_MEMORY;
     }
-    SCUError error = SCU_ERROR_NONE;
+    ScuError error = SCU_ERROR_NONE;
     *ratings = scu_list_new(SCU_SIZEOF(Rating));
     if (*ratings == nullptr) {
         scu_hash_map_free(*workflows);
@@ -538,7 +538,7 @@ fail:
  * @return The sum of the part ratings of all accepted parts.
  */
 static isize sum_of_accepted_ratings(
-    const SCUHashMap* workflows,
+    const ScuHashMap* workflows,
     const Rating* ratings
 ) {
     SCU_ASSERT(workflows != nullptr);
@@ -598,7 +598,7 @@ static isize sum_of_accepted_ratings(
  * @return The number of distinct ratings that are accepted.
  */
 static isize count_accepted_ratings(
-    const SCUHashMap* workflows,
+    const ScuHashMap* workflows,
     const char* id,
     RangeSet ranges
 ) {
@@ -671,9 +671,9 @@ static isize count_accepted_ratings(
  *
  * @param[in, out] workflows The hash map of workflows to deallocate.
  */
-static inline void workflows_free(SCUHashMap* workflows) {
+static inline void workflows_free(ScuHashMap* workflows) {
     if (workflows != nullptr) {
-        SCUHashMapEntry entry;
+        ScuHashMapEntry entry;
         SCU_HASH_MAP_FOREACH(entry, workflows) {
             workflow_free(entry.value);
         }
@@ -698,9 +698,9 @@ static inline void ratings_free(Rating* ratings) {
 }
 
 int main() {
-    SCUHashMap* workflows;
+    ScuHashMap* workflows;
     Rating* ratings;
-    SCUError error = parse_workflows_and_ratings(&workflows, &ratings);
+    ScuError error = parse_workflows_and_ratings(&workflows, &ratings);
     if (error != SCU_ERROR_NONE) {
         scu_fprintf(
             SCU_STDERR,

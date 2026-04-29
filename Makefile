@@ -6,7 +6,7 @@ CFLAGS = -std=c23 -Wall -Wextra -Wpedantic -Wundef -Wshadow -Wconversion \
 CPPFLAGS = ${INCS} ${DEPFLAGS}
 DEPFLAGS = -MMD -MP
 LDFLAGS = -L${LIB}
-LDLIBS = -lscu${LIB_SUFFIX}
+LDLIBS = -lm -lscu${LIB_SUFFIX}
 
 CONFIG ?= debug
 ifeq (${CONFIG}, debug)

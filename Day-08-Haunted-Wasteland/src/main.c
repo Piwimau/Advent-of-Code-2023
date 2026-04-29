@@ -40,7 +40,7 @@ typedef struct Network {
     Direction* directions;
 
     /** @brief A hash map of node names to nodes in the network. */
-    SCUHashMap* nodes;
+    ScuHashMap* nodes;
 
 } Network;
 
@@ -160,9 +160,9 @@ static inline bool direction_parse(char c, Direction* direction) {
  *                     network on failure.
  * @return `SCU_ERROR_NONE` on success, or an appropriate error code on failure.
  */
-static SCUError network_parse(Network* network) {
+static ScuError network_parse(Network* network) {
     SCU_ASSERT(network != nullptr);
-    SCUError error = SCU_ERROR_NONE;
+    ScuError error = SCU_ERROR_NONE;
     network->directions = scu_list_new(SCU_SIZEOF(Direction));
     if (network->directions == nullptr) {
         error = SCU_ERROR_OUT_OF_MEMORY;
@@ -354,7 +354,7 @@ static inline i64 lcm(i64 a, i64 b) {
 static i64 network_required_steps_all(const Network* network) {
     SCU_ASSERT(network != nullptr);
     i64 steps = 1;
-    SCUHashMapEntry entry;
+    ScuHashMapEntry entry;
     SCU_HASH_MAP_FOREACH(entry, network->nodes) {
         Node* node = entry.value;
         if (scu_str_ends_with(node->name, 'A')) {
@@ -390,7 +390,7 @@ static void network_free(Network* network) {
 
 int main() {
     Network network;
-    SCUError error = network_parse(&network);
+    ScuError error = network_parse(&network);
     if (error != SCU_ERROR_NONE) {
         scu_fprintf(
             SCU_STDERR,

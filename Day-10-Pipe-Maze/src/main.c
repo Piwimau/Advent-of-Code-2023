@@ -302,7 +302,7 @@ static void grid_free(Grid* grid) {
  *                  failure.
  * @return `SCU_ERROR_NONE` on success, or an appropriate error code on failure.
  */
-static SCUError grid_parse(Grid* grid) {
+static ScuError grid_parse(Grid* grid) {
     SCU_ASSERT(grid != nullptr);
     grid->tiles = scu_list_new(SCU_SIZEOF(Tile));
     if (grid->tiles == nullptr) {
@@ -315,7 +315,7 @@ static SCUError grid_parse(Grid* grid) {
     bool foundStart = false;
     char* line = nullptr;
     isize size = 0;
-    SCUError error;
+    ScuError error;
     while ((error = scu_readln(&line, &size)) == SCU_ERROR_NONE) {
         isize newlineIndex = scu_str_index_of(line, '\n');
         if (newlineIndex != -1) {
@@ -425,7 +425,7 @@ static inline bool grid_is_tile(
  */
 static GridAnalysis grid_analyze(const Grid* grid) {
     SCU_ASSERT(grid != nullptr);
-    SCUHashSet* loop = scu_hash_set_new(
+    ScuHashSet* loop = scu_hash_set_new(
         SCU_SIZEOF(Position),
         hash_position,
         equal_position
@@ -446,7 +446,7 @@ static GridAnalysis grid_analyze(const Grid* grid) {
     }
     Position current = position_neighbor(grid->start, prev);
     GridAnalysis analysis = { .farthestDistance = 1 };
-    SCUError error;
+    ScuError error;
     while ((error = scu_hash_set_try_add(loop, &current)) == SCU_ERROR_NONE) {
         const Tile* tile = grid_tile_at(grid, current);
         Direction next = *tile ^ direction_opposite(prev);
@@ -487,7 +487,7 @@ fail:
 
 int main() {
     Grid grid;
-    SCUError error = grid_parse(&grid);
+    ScuError error = grid_parse(&grid);
     if (error != SCU_ERROR_NONE) {
         scu_fprintf(
             SCU_STDERR,

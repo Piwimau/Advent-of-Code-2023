@@ -57,7 +57,7 @@ typedef struct Extrapolation {
  *                     history on failure.
  * @return `SCU_ERROR_NONE` on success, or an appropriate error code on failure.
  */
-static SCUError history_parse(
+static ScuError history_parse(
     const char* restrict line,
     History* restrict history
 ) {
@@ -67,7 +67,7 @@ static SCUError history_parse(
     if (history->values == nullptr) {
         return SCU_ERROR_OUT_OF_MEMORY;
     }
-    SCUError error = SCU_ERROR_NONE;
+    ScuError error = SCU_ERROR_NONE;
     i32 value;
     isize read;
     while (scu_sscanf(line, "%" I32_SCND "%" ISIZE_SCNN, &value, &read) == 1) {
@@ -262,7 +262,7 @@ static void report_free(Report* report) {
  *                    on failure.
  * @return `SCU_ERROR_NONE` on success, or an appropriate error code on failure.
  */
-static SCUError report_parse(Report* report) {
+static ScuError report_parse(Report* report) {
     SCU_ASSERT(report != nullptr);
     report->histories = scu_list_new(SCU_SIZEOF(History));
     if (report->histories == nullptr) {
@@ -270,7 +270,7 @@ static SCUError report_parse(Report* report) {
     }
     char* line = nullptr;
     isize size = 0;
-    SCUError error;
+    ScuError error;
     while ((error = scu_readln(&line, &size)) == SCU_ERROR_NONE) {
         History history;
         error = history_parse(line, &history);
@@ -312,7 +312,7 @@ static Extrapolation report_extrapolate(const Report* report) {
     if (newHistory.values == nullptr) {
         goto newHistoryAllocFail;
     }
-    SCUStack* extrapolations = scu_stack_new(SCU_SIZEOF(Extrapolation));
+    ScuStack* extrapolations = scu_stack_new(SCU_SIZEOF(Extrapolation));
     if (extrapolations == nullptr) {
         goto extrapolationsAllocFail;
     }
@@ -353,7 +353,7 @@ oldHistoryAllocFail:
 
 int main() {
     Report report;
-    SCUError error = report_parse(&report);
+    ScuError error = report_parse(&report);
     if (error != SCU_ERROR_NONE) {
         scu_fprintf(
             SCU_STDERR,
