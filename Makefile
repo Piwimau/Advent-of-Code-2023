@@ -43,7 +43,7 @@ SRCS = ${shell find ${SRC} -type f -name '*.c'}
 OBJS = ${patsubst ${SRC}/%.c, ${BUILD}/${CONFIG}/%.o, ${SRCS}}
 DEPS = ${patsubst ${SRC}/%.c, ${BUILD}/${CONFIG}/%.d, ${SRCS}}
 
-BIN = ${BUILD}/${CONFIG}/main.exe
+BIN = ${BUILD}/${CONFIG}/main
 
 .PHONY: all run clean help
 
