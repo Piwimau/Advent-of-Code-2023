@@ -28,7 +28,7 @@ For this year of Advent of Code, I decided to use `C` (instead of `C#` as in the
 previous two years). This not only gave me the opportunity to try out the new
 `C23` standard in practice, but also allowed to improve my systems programming
 skills (memory management, pointers, alignment, bit manipulation, etc.). I
-developed a small library called [`SCU`](https://github.com/Piwimau/SCU)
+developed a small library called [`SCU`](https://github.com/Piwimau/scu)
 alongside, which contains various utilities for things like assertions, error
 handling, I/O, math, string manipulation, and more. These utilities proved to be
 very useful when solving the puzzles and will likely be as well in any of my
@@ -44,18 +44,18 @@ sometimes little sketches to better illustrate the way a piece of code works.
 The general structure of this project is as follows:
 
 ```plaintext
-Day-01-Trebuchet/
+day-01-trebuchet/
   resources/
     .gitkeep
   src/
     main.c
-Day-02-Cube-Conundrum/
+day-02-cube-conundrum/
   resources/
     .gitkeep
   src/
     main.c
 ...
-Day-25-Snowverload/
+day-25-snowverload/
   ...
 .clang-format
 .gitignore
@@ -89,12 +89,12 @@ If you want to try out one of my solutions, simply follow these steps below:
    choice.
 
    ```shell
-   git clone https://github.com/Piwimau/Advent-of-Code-2023 ./Advent-of-Code-2023
-   cd ./Advent-of-Code-2023
+   git clone https://github.com/Piwimau/advent-of-code-2023 ./advent-of-code-2023
+   cd ./advent-of-code-2023
    ```
 
 3. [As explained above](#about-this-project), the solutions depend on my small
-   utility library [`SCU`](https://github.com/Piwimau/SCU), which you need to
+   utility library [`SCU`](https://github.com/Piwimau/scu), which you need to
    download, build and install as well. Since people prefer different operating
    systems, compilers, flags, build systems and directory structures, I won't go
    into much detail here. My projects usually have few dependencies, so I often
@@ -157,7 +157,7 @@ If you want to try out one of my solutions, simply follow these steps below:
 ## Timings
 
 Finally, here are some simple (non-scientific) timings I created using
-[`SCU`](https://github.com/Piwimau/SCU) and my main machine (Intel Core
+[`SCU`](https://github.com/Piwimau/scu) and my main machine (Intel Core
 i9-13900HX, 32GB DDR5-5600 RAM) running Windows 11 25H2. All used
 `CONFIG=release` and `NATIVE=1` to take advantage of (machine-specific)
 optimizations. The reported times are the result of ten runs and represent the
